@@ -1,0 +1,22 @@
+{
+  "name": "cybozu-kahoot-backend",
+  "version": "0.0.1",
+  "description": "A web application to create and host quizzes game",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Team Xanh Chin",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "connect-mongo": "^3.2.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "mongoose": "^5.9.26",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0"
+  }
+}
