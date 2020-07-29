@@ -10,7 +10,11 @@ const routes = require('./routes');
 
 const app = express();
 
-mongoose.connect(config.databaseURL, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
+mongoose.connect(config.databaseURL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

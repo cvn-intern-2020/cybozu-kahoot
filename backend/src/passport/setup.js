@@ -6,13 +6,9 @@ const User = require('../models/user');
 
 passport.serializeUser((user, done) => done(null, user.id));
 
-passport.deserializeUser((id, done) => {
-  User.findById(
-    (id,
-    (err, user) => {
-      done(err, user);
-    })
-  );
+passport.deserializeUser(async (id, done) => {
+  const foundUser = await User.findById(id).exec();
+  done(null, foundUser);
 });
 
 const addUser = async (email, password) => {
@@ -26,24 +22,30 @@ const addUser = async (email, password) => {
 
 // Local Strategy
 passport.use(
-  new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
-    // Match user
-    const foundUser = await User.findOne({ email });
-    if (!foundUser) {
-      // Create new user if none was found
-      try {
-        const addedUser = await addUser(email, password);
-        return done(null, addedUser);
-      } catch (err) {
-        return done(null, false, { message: err });
+  new LocalStrategy(
+    { usernameField: 'email' },
+    async (email, password, done) => {
+      // Match user
+      const foundUser = await User.findOne({ email });
+      if (!foundUser) {
+        // Create new user if none was found
+        try {
+          const addedUser = await addUser(email, password);
+          return done(null, addedUser);
+        } catch (err) {
+          return done(null, false, { message: err });
+        }
+      } else {
+        // Match password
+        const isPasswordMatch = await bcrypt.compare(
+          password,
+          foundUser.password
+        );
+        if (isPasswordMatch) return done(null, foundUser);
+        return done(null, false, { message: 'Wrong password' });
       }
-    } else {
-      // Match password
-      const isPasswordMatch = await bcrypt.compare(password, foundUser.password);
-      if (isPasswordMatch) return done(null, foundUser);
-      return done(null, false, { message: 'Wrong password' });
     }
-  })
+  )
 );
 
 module.exports = passport;
