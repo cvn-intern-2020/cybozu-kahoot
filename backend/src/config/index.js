@@ -9,4 +9,5 @@ module.exports = {
   port: parseInt(process.env.PORT, 10),
   databaseURL: process.env.MONGODB_URI,
   secret: process.env.SECRET,
+  clientURL: process.env.CLIENT_URL,
 };
