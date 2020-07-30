@@ -3,4 +3,6 @@ const ensureAuthenticated = (req, res, next) => {
   else res.status(401).json({ errors: 'You are not logged in.' });
 };
 
-module.exports = { ensureAuthenticated };
+const formatEmail = (input) => input.trim().toLowerCase();
+
+module.exports = { ensureAuthenticated, formatEmail };

@@ -1,11 +1,12 @@
 const express = require('express');
+const cors = require('cors');
 const session = require('express-session');
 const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo')(session);
+const cookieParser = require('cookie-parser');
 const passport = require('./passport/setup');
 
 const config = require('./config');
-
 const routes = require('./routes');
 
 const app = express();
@@ -18,6 +19,12 @@ mongoose.connect(config.databaseURL, {
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+  })
+);
 
 app.use(
   session({
@@ -27,6 +34,8 @@ app.use(
     store: new MongoStore({ mongooseConnection: mongoose.connection }),
   })
 );
+
+app.use(cookieParser(config.secret));
 
 app.use(passport.initialize());
 app.use(passport.session());

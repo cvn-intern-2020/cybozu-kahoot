@@ -17,6 +17,10 @@ router.post('/register_login', (req, res, next) => {
   })(req, res, next);
 });
 
+router.get('/user', (req, res) => {
+  return res.json(req.user);
+});
+
 router.get('/logout', ensureAuthenticated, (req, res) => {
   req.logOut();
   return res.json({ message: 'You haved logged out.' });
