@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 import { UserContext } from '../../contexts/UserContext';
 import Home from '../Home/Home';
@@ -13,10 +15,14 @@ const Main = () => {
   return (
     <Router>
       <NavBar></NavBar>
-      <Switch>
-        <Route path="/" exact component={Home}></Route>
-        <Route path="/register_login" component={RegisterLogin}></Route>
-      </Switch>
+      <Row className="h-75 justify-content-center align-items-center m-0 p-0">
+        <Col>
+          <Switch>
+            <Route path="/" exact component={Home}></Route>
+            <Route path="/register_login" component={RegisterLogin}></Route>
+          </Switch>
+        </Col>
+      </Row>
     </Router>
   );
 };

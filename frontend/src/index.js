@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Main from './components/Main/Main';
 import UserContextProvider from './contexts/UserContext';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './GlobalStyles.css';
 
 ReactDOM.render(
