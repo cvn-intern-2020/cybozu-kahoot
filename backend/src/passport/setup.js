@@ -9,6 +9,7 @@ passport.serializeUser((user, done) => done(null, user.id));
 passport.deserializeUser(async (id, done) => {
   const foundUser = await findUserById(id);
   const userInformation = {
+    id: id,
     email: foundUser.email,
   };
   done(null, userInformation);
