@@ -4,6 +4,7 @@ const {
   addQuizController,
   getQuizzesController,
   getSingleQuizController,
+  updateQuizController,
 } = require('../controllers/quiz');
 const { ensureAuthenticated } = require('../utils/auth');
 
@@ -14,5 +15,7 @@ router.post('/', ensureAuthenticated, addQuizController);
 router.get('/', ensureAuthenticated, getQuizzesController);
 
 router.get('/:quizId', ensureAuthenticated, getSingleQuizController);
+
+router.put('/:quizId', ensureAuthenticated, updateQuizController);
 
 module.exports = router;

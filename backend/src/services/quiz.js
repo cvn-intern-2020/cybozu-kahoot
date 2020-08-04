@@ -10,8 +10,12 @@ const findQuizzesByUserId = (userId) => Quiz.find({ author: userId });
 
 const findQuizById = (id) => Quiz.findById(id);
 
+const findQuizAndUpdate = (quizId, quiz) =>
+  Quiz.findByIdAndUpdate(quizId, quiz, { new: true });
+
 module.exports = {
   addQuiz,
   findQuizzesByUserId,
   findQuizById,
+  findQuizAndUpdate,
 };
