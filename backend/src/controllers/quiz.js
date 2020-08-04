@@ -1,6 +1,6 @@
 const { addQuiz, findQuizzesByUserId } = require('../services/quiz');
 
-const postQuiz = async (req, res) => {
+const addQuizController = async (req, res) => {
   const quiz = req.body;
   quiz.author = req.user.id;
   try {
@@ -11,7 +11,7 @@ const postQuiz = async (req, res) => {
   }
 };
 
-const getQuizzes = async (req, res) => {
+const getQuizzesController = async (req, res) => {
   const userId = req.user.id;
   try {
     const foundQuiz = await findQuizzesByUserId(userId);
@@ -22,6 +22,6 @@ const getQuizzes = async (req, res) => {
 };
 
 module.exports = {
-  postQuiz,
-  getQuizzes,
+  addQuizController,
+  getQuizzesController,
 };

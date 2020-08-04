@@ -6,6 +6,6 @@ const quiz = require('./quizzes');
 const router = express.Router();
 
 router.use('/auth', auth);
-router.use('/quizzes', quiz);
+router.use('/quiz', quiz);
 
 module.exports = router;
