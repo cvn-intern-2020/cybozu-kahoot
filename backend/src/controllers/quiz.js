@@ -1,4 +1,4 @@
-const { addQuiz } = require('../services/quiz');
+const { addQuiz, findQuizzesByUserId } = require('../services/quiz');
 
 const postQuiz = async (req, res) => {
   const quiz = req.body;
@@ -11,6 +11,17 @@ const postQuiz = async (req, res) => {
   }
 };
 
+const getQuizzes = async (req, res) => {
+  const userId = req.user.id;
+  try {
+    const foundQuiz = await findQuizzesByUserId(userId);
+    return res.status(200).json(foundQuiz);
+  } catch (err) {
+    return res.status(500);
+  }
+};
+
 module.exports = {
   postQuiz,
+  getQuizzes,
 };
