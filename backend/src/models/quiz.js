@@ -62,4 +62,4 @@ const QuizSchema = new mongoose.Schema({
   updatedAt: { type: Date, default: Date.now },
 });
 
-module.exports = Quiz = mongoose.model('quizzes', QuizSchema);
+module.exports = mongoose.model('quizzes', QuizSchema);
