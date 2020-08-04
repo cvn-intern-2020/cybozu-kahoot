@@ -13,9 +13,12 @@ const findQuizById = (id) => Quiz.findById(id);
 const findQuizAndUpdate = (quizId, quiz) =>
   Quiz.findByIdAndUpdate(quizId, quiz, { new: true });
 
+const findQuizAndDelete = (quizId) => Quiz.findByIdAndDelete(quizId);
+
 module.exports = {
   addQuiz,
   findQuizzesByUserId,
   findQuizById,
   findQuizAndUpdate,
+  findQuizAndDelete,
 };

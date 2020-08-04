@@ -3,6 +3,7 @@ const {
   findQuizzesByUserId,
   findQuizById,
   findQuizAndUpdate,
+  findQuizAndDelete,
 } = require('../services/quiz');
 
 const addQuizController = async (req, res) => {
@@ -47,9 +48,38 @@ const updateQuizController = async (req, res) => {
   }
 };
 
+const deleteQuizController = async (req, res) => {
+  const { quizId } = req.params;
+  try {
+    const deleteQuiz = await findQuizAndDelete(quizId);
+    return res.status(200).json(deleteQuiz);
+  } catch (err) {
+    return res.status(500);
+  }
+};
+
+const cloneQuizController = async (req, res) => {
+  const { quizId } = req.params;
+  let quiz = await findQuizById(quizId);
+  quiz = quiz.toObject({
+    transform: (doc, ret) => {
+      delete ret._id;
+      return ret;
+    },
+  });
+  try {
+    const cloneQuiz = await addQuiz(quiz);
+    return res.status(200).json(cloneQuiz);
+  } catch (err) {
+    return res.status(500);
+  }
+};
+
 module.exports = {
   addQuizController,
   getQuizzesController,
   getSingleQuizController,
   updateQuizController,
+  deleteQuizController,
+  cloneQuizController,
 };
