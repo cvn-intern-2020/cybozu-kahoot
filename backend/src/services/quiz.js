@@ -8,7 +8,10 @@ const addQuiz = async (quiz) => {
 
 const findQuizzesByUserId = (userId) => Quiz.find({ author: userId });
 
+const findQuizById = (id) => Quiz.findById(id);
+
 module.exports = {
   addQuiz,
   findQuizzesByUserId,
+  findQuizById,
 };

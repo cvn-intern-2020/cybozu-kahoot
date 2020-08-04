@@ -1,4 +1,8 @@
-const { addQuiz, findQuizzesByUserId } = require('../services/quiz');
+const {
+  addQuiz,
+  findQuizzesByUserId,
+  findQuizById,
+} = require('../services/quiz');
 
 const addQuizController = async (req, res) => {
   const quiz = req.body;
@@ -14,7 +18,17 @@ const addQuizController = async (req, res) => {
 const getQuizzesController = async (req, res) => {
   const userId = req.user.id;
   try {
-    const foundQuiz = await findQuizzesByUserId(userId);
+    const foundQuizzes = await findQuizzesByUserId(userId);
+    return res.status(200).json(foundQuizzes);
+  } catch (err) {
+    return res.status(500);
+  }
+};
+
+const getSingleQuizController = async (req, res) => {
+  const id = req.params.quizId;
+  try {
+    const foundQuiz = await findQuizById(id);
     return res.status(200).json(foundQuiz);
   } catch (err) {
     return res.status(500);
@@ -24,4 +38,5 @@ const getQuizzesController = async (req, res) => {
 module.exports = {
   addQuizController,
   getQuizzesController,
+  getSingleQuizController,
 };
