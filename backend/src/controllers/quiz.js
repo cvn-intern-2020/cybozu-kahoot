@@ -9,70 +9,58 @@ const {
 const addQuizController = async (req, res) => {
   const quiz = req.body;
   quiz.author = req.user.id;
-  try {
-    const addedQuiz = await addQuiz(quiz);
-    return res.status(201).json({ id: addedQuiz.id });
-  } catch (err) {
-    return res.status(500);
-  }
+  const addedQuiz = await addQuiz(quiz);
+  if (!addedQuiz.errors) return res.status(201).json({ id: addedQuiz.id });
+  return res.status(500).json({ errors: addedQuiz.errors });
 };
 
 const getQuizzesController = async (req, res) => {
   const userId = req.user.id;
-  try {
-    const foundQuizzes = await findQuizzesByUserId(userId);
-    return res.status(200).json(foundQuizzes);
-  } catch (err) {
-    return res.status(500);
-  }
+  const foundQuizzes = await findQuizzesByUserId(userId);
+  if (!foundQuizzes.errors) return res.status(200).json(foundQuizzes);
+  return res.status(500).json({ errors: foundQuizzes.errors });
 };
 
 const getSingleQuizController = async (req, res) => {
   const { quizId } = req.params;
-  try {
-    const foundQuiz = await findQuizById(quizId);
-    return res.status(200).json(foundQuiz);
-  } catch (err) {
-    return res.status(500);
-  }
+  const userId = req.user.id;
+  const foundQuiz = await findQuizById(quizId, userId);
+  if (!foundQuiz.errors) return res.status(200).json(foundQuiz);
+  return res.status(500).json({ errors: foundQuiz.errors });
 };
 
 const updateQuizController = async (req, res) => {
   const { quizId } = req.params;
+  const userId = req.user.id;
   const quiz = req.body;
-  try {
-    const upadtedQuiz = await findQuizAndUpdate(quizId, quiz);
-    return res.status(200).json(upadtedQuiz);
-  } catch (err) {
-    return res.status(500);
-  }
+  const updatedQuiz = await findQuizAndUpdate(quizId, userId, quiz);
+  if (!updatedQuiz.errors) return res.status(200).json(updatedQuiz);
+  return res.status(500).json({ errors: updatedQuiz.errors });
 };
 
 const deleteQuizController = async (req, res) => {
   const { quizId } = req.params;
-  try {
-    const deleteQuiz = await findQuizAndDelete(quizId);
-    return res.status(200).json(deleteQuiz);
-  } catch (err) {
-    return res.status(500);
-  }
+  const userId = req.user.id;
+  const deletedResult = await findQuizAndDelete(quizId, userId);
+  if (!deletedResult.errors) return res.status(200).json(deletedResult);
+  return res.status(500).json({ errors: deletedResult.errors });
 };
 
 const cloneQuizController = async (req, res) => {
   const { quizId } = req.params;
-  let quiz = await findQuizById(quizId);
+  const userId = req.user.id;
+  let quiz = await findQuizById(quizId, userId);
   quiz = quiz.toObject({
     transform: (doc, ret) => {
       delete ret._id;
+      ret.createdAt = Date.now();
+      ret.updatedAt = Date.now();
       return ret;
     },
   });
-  try {
-    const cloneQuiz = await addQuiz(quiz);
-    return res.status(200).json(cloneQuiz);
-  } catch (err) {
-    return res.status(500);
-  }
+  const clonedQuiz = await addQuiz(quiz);
+  if (!clonedQuiz.errors) return res.status(200).json(clonedQuiz);
+  return res.status(500).json({ errors: clonedQuiz.errors });
 };
 
 module.exports = {

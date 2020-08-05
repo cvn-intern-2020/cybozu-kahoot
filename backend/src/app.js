@@ -15,6 +15,7 @@ mongoose.connect(config.databaseURL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
+  useFindAndModify: false,
 });
 
 app.use(express.json());
