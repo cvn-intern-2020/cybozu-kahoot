@@ -6,6 +6,7 @@ import Col from 'react-bootstrap/Col';
 import { UserContext } from '../../contexts/UserContext';
 import Home from '../Home/Home';
 import RegisterLogin from '../RegisterLogin/RegisterLogin';
+import QuizList from '../QuizList/QuizList';
 import NavBar from '../NavBar/NavBar';
 
 const Main = () => {
@@ -20,6 +21,7 @@ const Main = () => {
           <Switch>
             <Route path="/" exact component={Home}></Route>
             <Route path="/register_login" component={RegisterLogin}></Route>
+            <Route path="/quizzes" component={QuizList}></Route>
           </Switch>
         </Col>
       </Row>
