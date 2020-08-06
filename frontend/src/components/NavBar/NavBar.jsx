@@ -19,6 +19,18 @@ const NavBar = () => {
         <Navbar.Brand>Cybozu Kahoot</Navbar.Brand>
       </Link>
       {!data ? null : (
+        <Link to="/quizzes">
+          <Button className="mr-2" variant="primary">
+            Manage quizzes
+          </Button>
+        </Link>
+      )}
+      {!data ? null : (
+        <Button className="mr-2" variant="success" href="/#">
+          Create quiz
+        </Button>
+      )}
+      {!data ? null : (
         <Button variant="danger" href="/#" onClick={logout}>
           Logout
         </Button>

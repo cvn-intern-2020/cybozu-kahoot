@@ -12,8 +12,14 @@ const addQuiz = async (quiz) => {
 
 const findQuizzesByUserId = async (userId) => {
   try {
-    const foundQuizzes = await Quiz.find({ author: userId });
-    return foundQuizzes;
+    const foundQuizzes = await Quiz.find(
+      { author: userId },
+      'title questions createdAt updatedAt'
+    ).lean();
+    return foundQuizzes.map((quiz) => {
+      quiz.questions = quiz.questions.length;
+      return quiz;
+    });
   } catch (err) {
     return { errors: err.message };
   }

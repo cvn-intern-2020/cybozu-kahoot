@@ -4,19 +4,25 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-const QuizItem = ({ quiz }) => {
+const QuizItem = ({ quiz, onUpdate }) => {
+  const updateQuizzes = () => {
+    fetch('http://localhost:6969/api/quiz', { credentials: 'include' })
+      .then((res) => res.json())
+      .then((updatedQuizzes) => onUpdate(updatedQuizzes));
+  };
+
   const cloneQuiz = () => {
     fetch(`http://localhost:6969/api/quiz/${quiz._id}/clone`, {
       credentials: 'include',
       method: 'post',
-    }).then((res) => (window.location.href = '/quizzes'));
+    }).then(() => updateQuizzes());
   };
 
   const deleteQuiz = () => {
     fetch(`http://localhost:6969/api/quiz/${quiz._id}`, {
       credentials: 'include',
       method: 'delete',
-    }).then((res) => (window.location.href = '/quizzes'));
+    }).then(() => updateQuizzes());
   };
 
   return (
@@ -26,22 +32,22 @@ const QuizItem = ({ quiz }) => {
           <h2>{quiz.title}</h2>
         </Card.Title>
         <Row>
-          <Col>
+          <Col sm className="mt-2 mt-sm-0">
             <Button variant="primary" block>
               Host
             </Button>
           </Col>
-          <Col>
+          <Col sm className="mt-2 mt-sm-0">
             <Button variant="success" block>
               Edit
             </Button>
           </Col>
-          <Col>
+          <Col sm className="mt-2 mt-sm-0">
             <Button variant="info" block onClick={cloneQuiz}>
               Clone
             </Button>
           </Col>
-          <Col>
+          <Col sm className="mt-2 mt-sm-0">
             <Button variant="danger" block onClick={deleteQuiz}>
               Delete
             </Button>

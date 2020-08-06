@@ -10,10 +10,15 @@ const QuizList = () => {
       .then((res) => res.json())
       .then((foundedQuizzes) => setQuizzes(foundedQuizzes));
   }, []);
+
+  const onUpdate = (updatedQuizzes) => {
+    setQuizzes(updatedQuizzes);
+  };
+
   return (
     <Container>
       {quizzes.map((quiz) => (
-        <QuizItem key={quiz._id} quiz={quiz} />
+        <QuizItem key={quiz._id} quiz={quiz} onUpdate={onUpdate} />
       ))}
     </Container>
   );
