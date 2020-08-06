@@ -8,6 +8,7 @@ import Home from '../Home/Home';
 import RegisterLogin from '../RegisterLogin/RegisterLogin';
 import QuizList from '../QuizList/QuizList';
 import NavBar from '../NavBar/NavBar';
+import QuizEdit from '../QuizEdit/QuizEdit';
 
 const Main = () => {
     const data = useContext(UserContext);
@@ -16,6 +17,7 @@ const Main = () => {
     return (
         <Router>
             <NavBar></NavBar>
+            <Route path="/quiz/:quizId/edit" component={QuizEdit} />
             <Row className="h-75 justify-content-center align-items-center m-0 p-0">
                 <Col>
                     <Switch>

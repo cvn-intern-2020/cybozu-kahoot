@@ -7,7 +7,7 @@ const QuizList = () => {
     const [quizzes, setQuizzes] = useState([]);
 
     useEffect(() => {
-        fetch(`${Config.backendURL}/api/auth/register_login`, {
+        fetch(`${Config.backendURL}/api/quiz`, {
             credentials: 'include',
         })
             .then((res) => res.json())
