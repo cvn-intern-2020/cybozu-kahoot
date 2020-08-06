@@ -1,12 +1,12 @@
 const express = require('express');
 
 const {
-  addQuizController,
-  getQuizzesController,
-  getSingleQuizController,
-  updateQuizController,
-  deleteQuizController,
-  cloneQuizController,
+    addQuizController,
+    getQuizzesController,
+    getSingleQuizController,
+    updateQuizController,
+    deleteQuizController,
+    cloneQuizController,
 } = require('../controllers/quiz');
 const { ensureAuthenticated } = require('../utils/auth');
 

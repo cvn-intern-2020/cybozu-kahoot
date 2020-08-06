@@ -1,17 +1,17 @@
 .NavBar ul {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100vw;
-  height: 50px;
-  background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100vw;
+    height: 50px;
+    background-color: black;
 }
 
 .NavBar ul li,
 .NavBar ul li a {
-  color: white;
-  list-style: none;
-  cursor: pointer;
-  text-decoration: none;
-  padding: 0 10px;
+    color: white;
+    list-style: none;
+    cursor: pointer;
+    text-decoration: none;
+    padding: 0 10px;
 }
