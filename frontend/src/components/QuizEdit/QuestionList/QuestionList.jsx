@@ -1,23 +1,37 @@
 import React from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
+import Button from 'react-bootstrap/Button';
 
 const QuestionList = ({
     questions,
     changeQuestionNumber,
     activeQuestionNumber,
+    removeQuestion,
 }) => {
     return (
         <ListGroup>
             {questions.map((question) => (
                 <ListGroup.Item
-                    action
                     key={question.number}
-                    onClick={(e) => changeQuestionNumber(question.number)}
                     active={
                         question.number === activeQuestionNumber ? true : false
                     }
                 >
-                    Question {question.number}
+                    <Button
+                        onClick={(e) => changeQuestionNumber(question.number)}
+                    >
+                        Question {question.number}
+                    </Button>
+
+                    <Button
+                        className="ml-auto"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            removeQuestion(question.number);
+                        }}
+                    >
+                        X
+                    </Button>
                 </ListGroup.Item>
             ))}
         </ListGroup>

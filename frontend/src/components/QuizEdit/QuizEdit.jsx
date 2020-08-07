@@ -7,6 +7,8 @@ import Config from '../../config';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import FormControl from 'react-bootstrap/FormControl';
 
 const QuizEdit = () => {
     const { quizId } = useParams();
@@ -40,16 +42,34 @@ const QuizEdit = () => {
             quiz.questions.find((q) => q.number === questionNumber)
         );
     };
+    const changeQuizTitle = (quizTitle) =>
+        setQuiz({ ...quiz, title: quizTitle });
+    const removeQuestion = (questionNumber) => {
+        if (currentQuestion.number === questionNumber) changeQuestionNumber(1);
+        let { questions } = quiz;
+        const questionIndex = questions.findIndex(
+            (q) => q.number === questionNumber
+        );
+        questions.splice(questionIndex, 1);
+        setQuiz({ ...quiz, questions });
+    };
+    const updateQuiz = () => {
+        fetch(`${Config.backendURL}/api/quiz/${quizId}`, {
+            credentials: 'include',
+            method: 'put',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(quiz),
+        });
+    };
 
     return (
         <div>
             <QuizEditNavbar
                 quiz={quiz}
-                onChange={(title) => {
-                    let updatedQuiz = quiz;
-                    updatedQuiz.title = title;
-                    setQuiz(updatedQuiz);
-                }}
+                onChange={changeQuizTitle}
+                onSubmit={updateQuiz}
             />
             <Row>
                 <Col md={3} lg={2}>
@@ -60,6 +80,7 @@ const QuizEdit = () => {
                         questions={quiz.questions}
                         changeQuestionNumber={changeQuestionNumber}
                         activeQuestionNumber={currentQuestion.number}
+                        removeQuestion={removeQuestion}
                     ></QuestionList>
                 </Col>
                 <Col>
