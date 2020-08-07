@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -8,17 +9,15 @@ import Config from '../../config';
 import AppAlert from '../Alert/Alert';
 
 const RegisterLogin = () => {
-    const [emailValue, setEmailValue] = useState('');
-    const [passwordValue, setPasswordValue] = useState('');
     const [alert, setAlert] = useState({
         content: '',
         variant: '',
         dismissible: true,
         show: false,
     });
+    const { register, handleSubmit, errors } = useForm();
 
-    const authenticate = async (e) => {
-        e.preventDefault();
+    const onSubmit = async (formData) => {
         const result = await fetch(
             `${Config.backendURL}/api/auth/register_login`,
             {
@@ -27,8 +26,8 @@ const RegisterLogin = () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    email: emailValue,
-                    password: passwordValue,
+                    email: formData.email,
+                    password: formData.password,
                 }),
                 credentials: 'include',
             }
@@ -43,6 +42,18 @@ const RegisterLogin = () => {
             });
         }
     };
+
+    useEffect(() => {
+        if (Object.keys(errors).length > 0) {
+            setAlert({
+                content: errors[Object.keys(errors)[0]].message,
+                variant: 'danger',
+                dismissible: true,
+                show: true,
+            });
+        }
+    }, [errors]);
+
     return (
         <Card className={`${styles.authFormContainer} shadow p-3`}>
             <Card.Body>
@@ -57,13 +68,19 @@ const RegisterLogin = () => {
                         setShow={setAlert}
                     />
                 ) : null}
-                <Form onSubmit={authenticate}>
+                <Form onSubmit={handleSubmit(onSubmit)}>
                     <Form.Group>
                         <Form.Label>Email address</Form.Label>
                         <Form.Control
                             type="email"
                             placeholder="Enter email"
-                            onChange={(e) => setEmailValue(e.target.value)}
+                            ref={register({
+                                required: {
+                                    value: true,
+                                    message: 'Email cannot be empty.',
+                                },
+                            })}
+                            name="email"
                         ></Form.Control>
                     </Form.Group>
                     <Form.Group>
@@ -71,12 +88,22 @@ const RegisterLogin = () => {
                         <Form.Control
                             type="password"
                             placeholder="Password"
-                            onChange={(e) => setPasswordValue(e.target.value)}
+                            ref={register({
+                                required: {
+                                    value: true,
+                                    message: 'Password cannot be empty.',
+                                },
+                                minLength: {
+                                    value: 6,
+                                    message:
+                                        'Password must contain at least 6 characters.',
+                                },
+                            })}
+                            name="password"
                         ></Form.Control>
                     </Form.Group>
                     <Button
                         variant="primary"
-                        onClick={(e) => authenticate(e)}
                         block
                         className="mt-4"
                         type="submit"
