@@ -43,64 +43,71 @@ const RegisterLogin = () => {
     }, [errors]);
 
     return (
-        <Card className={`${styles.authFormContainer} shadow p-3`}>
-            <Card.Body>
-                <Card.Title className="text-center mb-4">
-                    <h3>Register/Login</h3>
-                </Card.Title>
-                {alert.show ? (
-                    <AppAlert
-                        variant={alert.variant}
-                        content={alert.content}
-                        dismissible={alert.dismissible}
-                        setShow={setAlert}
-                    />
-                ) : null}
-                <Form onSubmit={handleSubmit(onSubmit)}>
-                    <Form.Group>
-                        <Form.Label>Email address</Form.Label>
-                        <Form.Control
-                            type="email"
-                            placeholder="Enter email"
-                            ref={register({
-                                required: {
-                                    value: true,
-                                    message: 'Email cannot be empty.',
-                                },
-                            })}
-                            name="email"
-                        ></Form.Control>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control
-                            type="password"
-                            placeholder="Password"
-                            ref={register({
-                                required: {
-                                    value: true,
-                                    message: 'Password cannot be empty.',
-                                },
-                                minLength: {
-                                    value: 6,
-                                    message:
-                                        'Password must contain at least 6 characters.',
-                                },
-                            })}
-                            name="password"
-                        ></Form.Control>
-                    </Form.Group>
-                    <Button
-                        variant="primary"
-                        block
-                        className="mt-4"
-                        type="submit"
-                    >
-                        Register/Login
-                    </Button>
-                </Form>
-            </Card.Body>
-        </Card>
+        <div className="d-flex justify-content-center align-items-center flex-grow-1">
+            <Card className={`${styles.authFormContainer} shadow-lg mb-5`}>
+                <Card.Body>
+                    <Card.Title className="text-center mb-4">
+                        <h2 className={styles.label}>Register/Login</h2>
+                    </Card.Title>
+                    {alert.show ? (
+                        <AppAlert
+                            variant={alert.variant}
+                            content={alert.content}
+                            dismissible={alert.dismissible}
+                            setShow={setAlert}
+                        />
+                    ) : null}
+                    <Form onSubmit={handleSubmit(onSubmit)}>
+                        <Form.Group>
+                            <Form.Label>Email address</Form.Label>
+                            <Form.Control
+                                type="email"
+                                placeholder="Enter email"
+                                ref={register({
+                                    required: {
+                                        value: true,
+                                        message: 'Email cannot be empty.',
+                                    },
+                                })}
+                                name="email"
+                                size="lg"
+                                className={styles.input}
+                            ></Form.Control>
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control
+                                type="password"
+                                placeholder="Password"
+                                ref={register({
+                                    required: {
+                                        value: true,
+                                        message: 'Password cannot be empty.',
+                                    },
+                                    minLength: {
+                                        value: 6,
+                                        message:
+                                            'Password must contain at least 6 characters.',
+                                    },
+                                })}
+                                name="password"
+                                size="lg"
+                                className={styles.input}
+                            ></Form.Control>
+                        </Form.Group>
+                        <Button
+                            variant="danger"
+                            block
+                            className={`${styles.button} mt-4`}
+                            type="submit"
+                            size="lg"
+                        >
+                            Register/Login
+                        </Button>
+                    </Form>
+                </Card.Body>
+            </Card>
+        </div>
     );
 };
 

@@ -2,7 +2,10 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import Nav from 'react-bootstrap/Nav';
 
+import styles from './NavBar.module.css';
 import { UserContext } from '../../contexts/UserContext';
 import { logoutUser } from './services';
 
@@ -13,34 +16,59 @@ const NavBar = () => {
         logoutUser().then((res) => (window.location.href = '/'));
 
     return (
-        <Navbar bg="dark" variant="dark">
+        <Navbar collapseOnSelect expand="md" className="flex-shrink-0">
             <Link to="/" className="mr-auto">
-                <Navbar.Brand>Cybozu Kahoot</Navbar.Brand>
+                <Navbar.Brand>
+                    <img
+                        height="60px"
+                        src="/logo.png"
+                        className="d-inline-block align-top"
+                        alt="Cybozu logo"
+                    />
+                </Navbar.Brand>
             </Link>
-            {!data ? null : (
-                <Link to="/quizzes">
-                    <Button className="mr-2" variant="primary">
-                        Manage quizzes
-                    </Button>
-                </Link>
-            )}
-            {!data ? null : (
-                <Link to="/quiz/new/edit">
-                    <Button className="mr-2" variant="success">
-                        Create quiz
-                    </Button>
-                </Link>
-            )}
-            {!data ? null : (
-                <Button variant="danger" href="/#" onClick={logout}>
-                    Logout
-                </Button>
-            )}
-            {data ? null : (
-                <Link to="/register_login">
-                    <Button variant="warning">Register/Login</Button>
-                </Link>
-            )}
+            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+            <Navbar.Collapse id="responsive-navbar-nav">
+                <Nav class="ml-auto d-flex mt-2 mt-md-0 justify-content-between">
+                    {!data ? null : (
+                        <Link
+                            to="/quizzes"
+                            className={`${styles.navLink} mr-2 nav-link`}
+                        >
+                            Manage quizzes
+                        </Link>
+                    )}
+                    {!data ? null : (
+                        <Link
+                            to="/quiz/new/edit"
+                            className={`${styles.navLink} nav-link`}
+                        >
+                            Create quiz
+                        </Link>
+                    )}
+                    {!data ? null : (
+                        <NavDropdown
+                            title={data.email}
+                            alignRight
+                            className={styles.navLink}
+                        >
+                            <NavDropdown.Item>Change password</NavDropdown.Item>
+                            <NavDropdown.Divider />
+                            <NavDropdown.Item onClick={logout}>
+                                Logout
+                            </NavDropdown.Item>
+                        </NavDropdown>
+                    )}
+                    {data ? null : (
+                        <Link
+                            to="/register_login"
+                            className={`${styles.navLink} nav-link`}
+                        >
+                            Register/Login
+                        </Link>
+                    )}
+                </Nav>
+            </Navbar.Collapse>
         </Navbar>
     );
 };

@@ -1,17 +1,12 @@
-.NavBar ul {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100vw;
-    height: 50px;
-    background-color: black;
+.navLink,
+.navLink > a {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 1.5rem;
+    color: black;
+    letter-spacing: 0.2rem;
 }
 
-.NavBar ul li,
-.NavBar ul li a {
+.navLink:hover,
+.navLink > a:hover {
     color: white;
-    list-style: none;
-    cursor: pointer;
-    text-decoration: none;
-    padding: 0 10px;
 }

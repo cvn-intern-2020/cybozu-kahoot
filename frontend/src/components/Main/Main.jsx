@@ -1,7 +1,9 @@
 import React, { useContext } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
 
 import { UserContext } from '../../contexts/UserContext';
 import Home from '../Home/Home';
@@ -16,20 +18,18 @@ const Main = () => {
 
     return (
         <Router>
-            <NavBar></NavBar>
-            <Route path="/quiz/:quizId/edit" component={QuizEdit} />
-            <Row className="h-75 justify-content-center align-items-center m-0 p-0">
-                <Col>
-                    <Switch>
-                        <Route path="/" exact component={Home}></Route>
-                        <Route
-                            path="/register_login"
-                            component={RegisterLogin}
-                        ></Route>
-                        <Route path="/quizzes" component={QuizList}></Route>
-                    </Switch>
-                </Col>
-            </Row>
+            <Container fluid className="min-100 d-flex flex-column p-0">
+                <NavBar></NavBar>
+                <Route path="/quiz/:quizId/edit" component={QuizEdit} />
+                <Switch>
+                    <Route path="/" exact component={Home}></Route>
+                    <Route
+                        path="/register_login"
+                        component={RegisterLogin}
+                    ></Route>
+                    <Route path="/quizzes" component={QuizList}></Route>
+                </Switch>
+            </Container>
         </Router>
     );
 };
