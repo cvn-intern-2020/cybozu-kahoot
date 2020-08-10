@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 import styles from './RegisterLogin.module.css';
-import { authUser } from './registerLoginServices';
+import { authUser } from './services';
 import AppAlert from '../Alert/Alert';
 
 const RegisterLogin = () => {

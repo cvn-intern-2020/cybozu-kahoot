@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
 
-import { getQuizzes } from '../quizServices';
+import { getQuizzes } from '../services';
 import QuizItem from './QuizItem/QuizItem';
 
 const QuizList = () => {

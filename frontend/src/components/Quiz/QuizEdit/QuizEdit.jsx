@@ -14,7 +14,7 @@ import {
     responseDataToFormData,
     formDataToRequestData,
     defaultQuiz,
-} from '../quizServices';
+} from '../services';
 import QuestionList from './QuestionList';
 
 const QuizEdit = () => {

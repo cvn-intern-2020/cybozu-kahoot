@@ -4,7 +4,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
 
 import { UserContext } from '../../contexts/UserContext';
-import { logoutUser } from './navbarServices';
+import { logoutUser } from './services';
 
 const NavBar = () => {
     const data = useContext(UserContext);
