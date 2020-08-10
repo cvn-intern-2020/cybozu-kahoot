@@ -26,9 +26,11 @@ const NavBar = () => {
                 </Link>
             )}
             {!data ? null : (
-                <Button className="mr-2" variant="success" href="/#">
-                    Create quiz
-                </Button>
+                <Link to="/quiz/new/edit">
+                    <Button className="mr-2" variant="success">
+                        Create quiz
+                    </Button>
+                </Link>
             )}
             {!data ? null : (
                 <Button variant="danger" href="/#" onClick={logout}>

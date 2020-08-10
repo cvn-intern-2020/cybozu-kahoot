@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
@@ -39,9 +40,14 @@ const QuizItem = ({ quiz, onUpdate }) => {
                         </Button>
                     </Col>
                     <Col sm className="mt-2 mt-sm-0">
-                        <Button variant="success" block>
-                            Edit
-                        </Button>
+                        <Link
+                            to={`/quiz/${quiz._id}/edit`}
+                            style={{ textDecoration: 'none' }}
+                        >
+                            <Button variant="success" block>
+                                Edit
+                            </Button>
+                        </Link>
                     </Col>
                     <Col sm className="mt-2 mt-sm-0">
                         <Button variant="info" block onClick={cloneQuiz}>

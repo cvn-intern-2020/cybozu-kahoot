@@ -58,17 +58,29 @@ const QuizEdit = () => {
                     data.questions[i].correctAnswers.push(j + 1);
             }
         }
-        fetch(`${Config.backendURL}/api/quiz/${quizId}`, {
-            credentials: 'include',
-            method: 'put',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
+        if (quizId === 'new') {
+            fetch(`${Config.backendURL}/api/quiz`, {
+                credentials: 'include',
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            }).then(() => (window.location.href = '/quizzes'));
+        } else {
+            fetch(`${Config.backendURL}/api/quiz/${quizId}`, {
+                credentials: 'include',
+                method: 'put',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            }).then(() => (window.location.href = '/quizzes'));
+        }
     };
 
     useEffect(() => {
+        if (quizId === 'new') return;
         async function fetchData() {
             const data = await fetch(
                 `${Config.backendURL}/api/quiz/${quizId}`,
