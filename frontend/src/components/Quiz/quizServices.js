@@ -1,4 +1,4 @@
-import { getQuizById, addQuiz, editQuizById } from '../../common/api';
+import fetchAPI from '../../common/api';
 
 const defaultQuiz = {
     title: '',
@@ -64,9 +64,17 @@ const defaultQuestion = (number) => {
     };
 };
 
-const getQuiz = (quizId) => getQuizById(quizId);
-const postQuiz = (quiz) => addQuiz(quiz);
-const editQuiz = (quiz, quizId) => editQuizById(quiz, quizId);
+const getQuizzes = () => fetchAPI('quiz');
+
+const cloneQuiz = (quizId) => fetchAPI(`quiz/${quizId}/clone`, 'POST');
+
+const deleteQuiz = (quizId) => fetchAPI(`quiz/${quizId}`, 'DELETE');
+
+const getQuiz = (quizId) => fetchAPI(`quiz/${quizId}`);
+
+const postQuiz = (quiz) => fetchAPI(`quiz`, 'POST', quiz);
+
+const editQuiz = (quiz, quizId) => fetchAPI(`quiz/${quizId}`, 'PUT', quiz);
 
 const responseDataToFormData = (data) => {
     for (let i = 0; i < data.questions.length; i++) {
@@ -97,6 +105,9 @@ const formDataToRequestData = (data) => {
 };
 
 export {
+    getQuizzes,
+    cloneQuiz,
+    deleteQuiz,
     getQuiz,
     postQuiz,
     editQuiz,

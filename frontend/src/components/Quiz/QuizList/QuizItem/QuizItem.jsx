@@ -5,7 +5,7 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-import { getQuizzes, cloneQuiz, deleteQuiz } from '../quizServices';
+import { getQuizzes, cloneQuiz, deleteQuiz } from '../../quizServices';
 
 const QuizItem = ({ quiz, onUpdate }) => {
     const updateQuizzes = () =>

@@ -1,6 +1,6 @@
 import React, { useState, createContext, useEffect } from 'react';
 
-import { getUser } from '../common/api';
+import { getUser } from './userServices';
 
 export const UserContext = createContext();
 

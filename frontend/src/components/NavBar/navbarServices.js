@@ -1,5 +1,5 @@
-import { logout } from '../../common/api';
+import fetchAPI from '../../common/api';
 
-const logoutUser = () => logout();
+const logoutUser = () => fetchAPI('auth/logout');
 
 export { logoutUser };

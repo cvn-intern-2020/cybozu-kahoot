@@ -8,7 +8,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 
-import { defaultQuestion } from './quizEditServices';
+import { defaultQuestion } from '../quizServices';
 
 const QuestionList = ({ control, register }) => {
     const { fields, append, remove } = useFieldArray({

@@ -1,5 +1,6 @@
-import { registerLogin } from '../../common/api';
+import fetchAPI from '../../common/api';
 
-const authUser = (userData) => registerLogin(userData);
+const authUser = (userData) =>
+    fetchAPI('auth/register_login', 'POST', userData);
 
 export { authUser };

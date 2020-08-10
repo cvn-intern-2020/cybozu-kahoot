@@ -6,9 +6,9 @@ import Col from 'react-bootstrap/Col';
 import { UserContext } from '../../contexts/UserContext';
 import Home from '../Home/Home';
 import RegisterLogin from '../RegisterLogin/RegisterLogin';
-import QuizList from '../QuizList/QuizList';
+import QuizList from '../Quiz/QuizList/QuizList';
 import NavBar from '../NavBar/NavBar';
-import QuizEdit from '../QuizEdit/QuizEdit';
+import QuizEdit from '../Quiz/QuizEdit/QuizEdit';
 
 const Main = () => {
     const data = useContext(UserContext);
