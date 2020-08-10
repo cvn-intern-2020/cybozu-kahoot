@@ -8,49 +8,30 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 
+import { defaultQuestion } from './quizEditServices';
+
 const QuestionList = ({ control, register }) => {
     const { fields, append, remove } = useFieldArray({
         control,
         name: 'questions',
     });
+
+    const getMaxQuestionNum = () => {
+        let maxQuestionNumber = 1;
+        fields.forEach((question) => {
+            if (question.number > maxQuestionNumber)
+                maxQuestionNumber = question.number;
+        });
+        return maxQuestionNumber;
+    };
+
     return (
         <Tab.Container defaultActiveKey="questions[0].number">
             <Col sm={2}>
                 <Button
-                    onClick={() => {
-                        let maxQuestionNumber = 1;
-                        fields.forEach((ques) =>
-                            ques.number > maxQuestionNumber
-                                ? (maxQuestionNumber = ques.number)
-                                : null
-                        );
-                        append({
-                            number: maxQuestionNumber + 1,
-                            title: '',
-                            type: 'single',
-                            timeLimit: 15,
-                            point: 2000,
-                            answers: [
-                                {
-                                    id: 1,
-                                    title: '',
-                                },
-                                {
-                                    id: 2,
-                                    title: '',
-                                },
-                                {
-                                    id: 3,
-                                    title: '',
-                                },
-                                {
-                                    id: 4,
-                                    title: '',
-                                },
-                            ],
-                            correctAnswers: [1],
-                        });
-                    }}
+                    onClick={() =>
+                        append(defaultQuestion(getMaxQuestionNum() + 1))
+                    }
                 >
                     Add question
                 </Button>
@@ -165,7 +146,7 @@ const QuestionList = ({ control, register }) => {
                                                 defaultValue={
                                                     item.answers[1].title
                                                 }
-                                                placeholder="Enter 1st answer..."
+                                                placeholder="Enter 2nd answer..."
                                             />
                                             <InputGroup.Append>
                                                 <input
@@ -188,7 +169,7 @@ const QuestionList = ({ control, register }) => {
                                                 defaultValue={
                                                     item.answers[2].title
                                                 }
-                                                placeholder="Enter 1st answer..."
+                                                placeholder="Enter 3rd answer..."
                                             />
                                             <InputGroup.Append>
                                                 <input
@@ -211,7 +192,7 @@ const QuestionList = ({ control, register }) => {
                                                 defaultValue={
                                                     item.answers[3].title
                                                 }
-                                                placeholder="Enter 1st answer..."
+                                                placeholder="Enter 4th answer..."
                                             />
                                             <InputGroup.Append>
                                                 <input

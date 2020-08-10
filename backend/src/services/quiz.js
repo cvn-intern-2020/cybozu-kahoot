@@ -3,7 +3,9 @@ const Quiz = require('../models/quiz');
 const addQuiz = async (quiz) => {
     try {
         const newQuiz = new Quiz(quiz);
+
         const addedQuiz = await newQuiz.save();
+
         return addedQuiz;
     } catch (err) {
         return { errors: err.message };
@@ -16,6 +18,7 @@ const findQuizzesByUserId = async (userId) => {
             { author: userId },
             'title questions createdAt updatedAt'
         ).lean();
+
         return foundQuizzes.map((quiz) => {
             quiz.questions = quiz.questions.length;
             return quiz;
@@ -28,6 +31,7 @@ const findQuizzesByUserId = async (userId) => {
 const findQuizById = async (id, userId) => {
     try {
         const foundQuiz = await Quiz.findOne({ _id: id, author: userId });
+
         return foundQuiz;
     } catch (err) {
         return { errors: err.message };
@@ -42,6 +46,7 @@ const findQuizAndUpdate = async (id, userId, quiz) => {
             quiz,
             { new: true }
         );
+
         return updatedQuiz;
     } catch (err) {
         return { errors: err.message };
@@ -51,6 +56,7 @@ const findQuizAndUpdate = async (id, userId, quiz) => {
 const findQuizAndDelete = async (id, userId) => {
     try {
         await Quiz.findOneAndDelete({ _id: id, author: userId });
+
         return {
             result: 'success',
         };

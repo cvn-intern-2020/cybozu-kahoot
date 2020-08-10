@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import QuizItem from './QuizItem/QuizItem';
 import Container from 'react-bootstrap/Container';
-import Config from '../../config';
+
+import { getQuizzes } from './quizServices';
+import QuizItem from './QuizItem/QuizItem';
 
 const QuizList = () => {
     const [quizzes, setQuizzes] = useState([]);
 
     useEffect(() => {
-        fetch(`${Config.backendURL}/api/quiz`, {
-            credentials: 'include',
-        })
-            .then((res) => res.json())
-            .then((foundedQuizzes) => setQuizzes(foundedQuizzes));
+        getQuizzes().then((foundedQuizzes) => setQuizzes(foundedQuizzes));
     }, []);
 
     const onUpdate = (updatedQuizzes) => {

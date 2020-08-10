@@ -1,17 +1,16 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { UserContext } from '../../contexts/UserContext';
 import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
-import Config from '../../config';
+
+import { UserContext } from '../../contexts/UserContext';
+import { logoutUser } from './navbarServices';
 
 const NavBar = () => {
     const data = useContext(UserContext);
-    const logout = () => {
-        fetch(`${Config.backendURL}/api/auth/logout`, {
-            credentials: 'include',
-        }).then((res) => (window.location.href = '/'));
-    };
+
+    const logout = () =>
+        logoutUser().then((res) => (window.location.href = '/'));
 
     return (
         <Navbar bg="dark" variant="dark">

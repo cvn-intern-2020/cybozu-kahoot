@@ -4,28 +4,16 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Config from '../../../config';
+
+import { getQuizzes, cloneQuiz, deleteQuiz } from '../quizServices';
 
 const QuizItem = ({ quiz, onUpdate }) => {
-    const updateQuizzes = () => {
-        fetch(`${Config.backendURL}/api/quiz`, { credentials: 'include' })
-            .then((res) => res.json())
-            .then((updatedQuizzes) => onUpdate(updatedQuizzes));
-    };
+    const updateQuizzes = () =>
+        getQuizzes().then((updatedQuizzes) => onUpdate(updatedQuizzes));
 
-    const cloneQuiz = () => {
-        fetch(`${Config.backendURL}/api/quiz/${quiz._id}/clone`, {
-            credentials: 'include',
-            method: 'post',
-        }).then(() => updateQuizzes());
-    };
+    const onCloneQuiz = () => cloneQuiz(quiz._id).then(() => updateQuizzes());
 
-    const deleteQuiz = () => {
-        fetch(`${Config.backendURL}/api/quiz/${quiz._id}`, {
-            credentials: 'include',
-            method: 'delete',
-        }).then(() => updateQuizzes());
-    };
+    const onDeleteQuiz = () => deleteQuiz(quiz._id).then(() => updateQuizzes());
 
     return (
         <Card className="text-center mb-4 shadow">
@@ -50,12 +38,12 @@ const QuizItem = ({ quiz, onUpdate }) => {
                         </Link>
                     </Col>
                     <Col sm className="mt-2 mt-sm-0">
-                        <Button variant="info" block onClick={cloneQuiz}>
+                        <Button variant="info" block onClick={onCloneQuiz}>
                             Clone
                         </Button>
                     </Col>
                     <Col sm className="mt-2 mt-sm-0">
-                        <Button variant="danger" block onClick={deleteQuiz}>
+                        <Button variant="danger" block onClick={onDeleteQuiz}>
                             Delete
                         </Button>
                     </Col>

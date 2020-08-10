@@ -1,105 +1,45 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import Config from '../../config';
 import { useForm } from 'react-hook-form';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Col from 'react-bootstrap/Col';
 import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
+
+import {
+    getQuiz,
+    postQuiz,
+    editQuiz,
+    responseDataToFormData,
+    formDataToRequestData,
+    defaultQuiz,
+} from './quizEditServices';
 import QuestionList from './QuestionList';
 
 const QuizEdit = () => {
     const { quizId } = useParams();
     const { register, control, handleSubmit, getValues, reset } = useForm({
-        defaultValues: {
-            title: '',
-            questions: [
-                {
-                    number: 1,
-                    title: '',
-                    type: 'single',
-                    timeLimit: 15,
-                    point: 2000,
-                    answers: [
-                        {
-                            id: 1,
-                            title: '',
-                            correct: true,
-                        },
-                        {
-                            id: 2,
-                            title: '',
-                            correct: false,
-                        },
-                        {
-                            id: 3,
-                            title: '',
-                            correct: false,
-                        },
-                        {
-                            id: 4,
-                            title: '',
-                            correct: false,
-                        },
-                    ],
-                },
-            ],
-        },
+        defaultValues: defaultQuiz,
     });
 
     const onSubmit = (data) => {
-        for (let i = 0; i < data.questions.length; i++) {
-            data.questions[i].number = i + 1;
-            data.questions[i].correctAnswers = [];
-            for (let j = 0; j < data.questions[i].answers.length; j++) {
-                data.questions[i].answers[j].id = j + 1;
-                if (data.questions[i].answers[j].correct)
-                    data.questions[i].correctAnswers.push(j + 1);
-            }
-        }
-        if (quizId === 'new') {
-            fetch(`${Config.backendURL}/api/quiz`, {
-                credentials: 'include',
-                method: 'post',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            }).then(() => (window.location.href = '/quizzes'));
-        } else {
-            fetch(`${Config.backendURL}/api/quiz/${quizId}`, {
-                credentials: 'include',
-                method: 'put',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            }).then(() => (window.location.href = '/quizzes'));
-        }
+        const requestBody = formDataToRequestData(data);
+        if (quizId === 'new')
+            postQuiz(requestBody).then(
+                () => (window.location.href = '/quizzes')
+            );
+        else
+            editQuiz(requestBody, quizId).then(
+                () => (window.location.href = '/quizzes')
+            );
     };
 
     useEffect(() => {
         if (quizId === 'new') return;
         async function fetchData() {
-            const data = await fetch(
-                `${Config.backendURL}/api/quiz/${quizId}`,
-                {
-                    credentials: 'include',
-                }
-            ).then((res) => res.json());
-            for (let i = 0; i < data.questions.length; i++) {
-                for (let j = 0; j < data.questions[i].answers.length; j++) {
-                    if (
-                        data.questions[i].correctAnswers.findIndex(
-                            (a) => a === data.questions[i].answers[j].id
-                        ) !== -1
-                    )
-                        data.questions[i].answers[j].correct = true;
-                    else data.questions[i].answers[j].correct = false;
-                }
-            }
-            reset(data);
+            const data = await getQuiz(quizId);
+            reset(responseDataToFormData(data));
         }
         fetchData();
     }, [reset]);

@@ -15,28 +15,28 @@ passport.deserializeUser(async (id, done) => {
     done(null, userInformation);
 });
 
-// Local Strategy
 passport.use(
     new LocalStrategy(
         { usernameField: 'email' },
         async (email, password, done) => {
-            // Match user
             const foundUser = await findUserByEmail(email);
+
             if (!foundUser) {
-                // Create new user if none was found
                 try {
                     const addedUser = await addUser(email, password);
+
                     return done(null, addedUser);
                 } catch (err) {
                     return done(null, false, { message: err });
                 }
             } else {
-                // Match password
                 const isPasswordMatch = await bcrypt.compare(
                     password,
                     foundUser.password
                 );
+
                 if (isPasswordMatch) return done(null, foundUser);
+
                 return done(null, false, { message: 'Wrong password' });
             }
         }

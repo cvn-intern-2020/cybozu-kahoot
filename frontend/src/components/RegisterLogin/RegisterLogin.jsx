@@ -3,9 +3,9 @@ import { useForm } from 'react-hook-form';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import styles from './RegisterLogin.module.css';
-import Config from '../../config';
 
+import styles from './RegisterLogin.module.css';
+import { authUser } from './registerLoginServices';
 import AppAlert from '../Alert/Alert';
 
 const RegisterLogin = () => {
@@ -18,20 +18,8 @@ const RegisterLogin = () => {
     const { register, handleSubmit, errors } = useForm();
 
     const onSubmit = async (formData) => {
-        const result = await fetch(
-            `${Config.backendURL}/api/auth/register_login`,
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    email: formData.email,
-                    password: formData.password,
-                }),
-                credentials: 'include',
-            }
-        ).then((res) => res.json());
+        const result = await authUser(formData);
+
         if (result.success) return (window.location.href = '/');
         if (result.errors) {
             setAlert({
