@@ -22,7 +22,8 @@ router.post('/register_login', (req, res, next) => {
 });
 
 router.get('/user', (req, res) => {
-    return res.json(req.user);
+    if (req.user) return res.json({ email: req.user.email });
+    return res.json(undefined);
 });
 
 router.get('/logout', ensureAuthenticated, (req, res) => {

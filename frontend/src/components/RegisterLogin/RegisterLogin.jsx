@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
@@ -8,8 +8,12 @@ import styles from './RegisterLogin.module.css';
 import { authUser } from './services';
 import AppAlert from '../../common/components/Alert/Alert';
 import { redirect } from '../../common/utils';
+import { UserContext } from '../../contexts/UserContext';
 
 const RegisterLogin = () => {
+    const user = useContext(UserContext);
+    if (user && user.email.length > 0) redirect('/');
+
     const [alert, setAlert] = useState({
         content: '',
         variant: '',
