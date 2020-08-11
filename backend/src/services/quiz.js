@@ -32,6 +32,7 @@ const findQuizById = async (id, userId) => {
     try {
         const foundQuiz = await Quiz.findOne({ _id: id, author: userId });
 
+        if (!foundQuiz) return { errors: 'Quiz not found' };
         return foundQuiz;
     } catch (err) {
         return { errors: err.message };
