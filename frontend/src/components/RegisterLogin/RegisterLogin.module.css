@@ -1,6 +1,22 @@
 .authFormContainer {
-  width: 70vw;
-  margin: 0 auto;
-  padding: 0.3em;
-  max-width: 400px;
+    margin: 0 auto;
+    width: 27.5rem;
+}
+
+.label {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 2rem;
+    color: black;
+}
+
+.input {
+    line-height: 2.375rem;
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 2.25rem;
+}
+
+.button {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 2.25rem;
+    letter-spacing: 0.2rem;
 }

@@ -1,0 +1,12 @@
+.navLink,
+.navLink > a {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 1.5rem;
+    color: black;
+    letter-spacing: 0.2rem;
+}
+
+.navLink:hover,
+.navLink > a:hover {
+    color: white;
+}

@@ -1,27 +1,27 @@
 const express = require('express');
 
 const {
-  addQuizController,
-  getQuizzesController,
-  getSingleQuizController,
-  updateQuizController,
-  deleteQuizController,
-  cloneQuizController,
+    addQuizController,
+    getQuizzesController,
+    getSingleQuizController,
+    updateQuizController,
+    deleteQuizController,
+    cloneQuizController,
 } = require('../controllers/quiz');
 const { ensureAuthenticated } = require('../utils/auth');
 
 const router = express.Router();
 
-router.post('/', ensureAuthenticated, addQuizController);
+router.use(ensureAuthenticated);
 
-router.get('/', ensureAuthenticated, getQuizzesController);
+router.route('/').get(getQuizzesController).post(addQuizController);
 
-router.get('/:quizId', ensureAuthenticated, getSingleQuizController);
+router
+    .route('/:quizId')
+    .get(getSingleQuizController)
+    .put(updateQuizController)
+    .delete(deleteQuizController);
 
-router.put('/:quizId', ensureAuthenticated, updateQuizController);
-
-router.delete('/:quizId', ensureAuthenticated, deleteQuizController);
-
-router.post('/:quizId/clone', ensureAuthenticated, cloneQuizController);
+router.post('/:quizId/clone', cloneQuizController);
 
 module.exports = router;

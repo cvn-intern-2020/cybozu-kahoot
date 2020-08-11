@@ -12,28 +12,28 @@ const routes = require('./routes');
 const app = express();
 
 mongoose.connect(config.databaseURL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
 });
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(
-  cors({
-    origin: config.clientURL,
-    credentials: true,
-  })
+    cors({
+        origin: config.clientURL,
+        credentials: true,
+    })
 );
 
 app.use(
-  session({
-    secret: config.secret,
-    resave: false,
-    saveUninitialized: true,
-    store: new MongoStore({ mongooseConnection: mongoose.connection }),
-  })
+    session({
+        secret: config.secret,
+        resave: false,
+        saveUninitialized: true,
+        store: new MongoStore({ mongooseConnection: mongoose.connection }),
+    })
 );
 
 app.use(cookieParser(config.secret));
