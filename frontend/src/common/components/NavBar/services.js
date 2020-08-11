@@ -1,4 +1,4 @@
-import fetchAPI from '../../common/api';
+import fetchAPI from '../../api';
 
 const logoutUser = () => fetchAPI('auth/logout');
 

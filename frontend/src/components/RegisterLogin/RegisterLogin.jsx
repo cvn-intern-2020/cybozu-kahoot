@@ -6,7 +6,8 @@ import Button from 'react-bootstrap/Button';
 
 import styles from './RegisterLogin.module.css';
 import { authUser } from './services';
-import AppAlert from '../Alert/Alert';
+import AppAlert from '../../common/components/Alert/Alert';
+import { redirect } from '../../common/utils';
 
 const RegisterLogin = () => {
     const [alert, setAlert] = useState({
@@ -20,7 +21,7 @@ const RegisterLogin = () => {
     const onSubmit = async (formData) => {
         const result = await authUser(formData);
 
-        if (result.success) return (window.location.href = '/');
+        if (result.success) return redirect('/');
         if (result.errors) {
             setAlert({
                 content: result.errors,

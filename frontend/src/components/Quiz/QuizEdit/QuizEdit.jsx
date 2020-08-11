@@ -15,6 +15,7 @@ import {
     formDataToRequestData,
     defaultQuiz,
 } from '../services';
+import { redirect } from '../../../common/utils';
 import QuestionList from './QuestionList';
 
 const QuizEdit = () => {
@@ -26,13 +27,8 @@ const QuizEdit = () => {
     const onSubmit = (data) => {
         const requestBody = formDataToRequestData(data);
         if (quizId === 'new')
-            postQuiz(requestBody).then(
-                () => (window.location.href = '/quizzes')
-            );
-        else
-            editQuiz(requestBody, quizId).then(
-                () => (window.location.href = '/quizzes')
-            );
+            postQuiz(requestBody).then(() => redirect('/quizzes'));
+        else editQuiz(requestBody, quizId).then(() => redirect('/quizzes'));
     };
 
     useEffect(() => {
@@ -42,7 +38,7 @@ const QuizEdit = () => {
             reset(responseDataToFormData(data));
         }
         fetchData();
-    }, [reset]);
+    }, [quizId, reset]);
 
     return (
         <Form onSubmit={handleSubmit(onSubmit)}>

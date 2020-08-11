@@ -1,19 +1,18 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar';
-import Button from 'react-bootstrap/Button';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Nav from 'react-bootstrap/Nav';
 
 import styles from './NavBar.module.css';
-import { UserContext } from '../../contexts/UserContext';
+import { UserContext } from '../../../contexts/UserContext';
 import { logoutUser } from './services';
+import { redirect } from '../../utils';
 
 const NavBar = () => {
     const data = useContext(UserContext);
 
-    const logout = () =>
-        logoutUser().then((res) => (window.location.href = '/'));
+    const logout = () => logoutUser().then((res) => redirect('/'));
 
     return (
         <Navbar collapseOnSelect expand="md" className="flex-shrink-0">
