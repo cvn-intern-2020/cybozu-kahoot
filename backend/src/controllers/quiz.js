@@ -64,6 +64,7 @@ const cloneQuizController = async (req, res) => {
     quiz = quiz.toObject({
         transform: (doc, ret) => {
             delete ret._id;
+            ret.title = `Copy of ${doc.title}`;
             ret.createdAt = Date.now();
             ret.updatedAt = Date.now();
             return ret;
