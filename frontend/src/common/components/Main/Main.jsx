@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
     BrowserRouter as Router,
     Route,
@@ -17,6 +17,13 @@ import { UserContext } from '../../../contexts/UserContext';
 
 const Main = () => {
     const user = useContext(UserContext);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        if (typeof user !== 'undefined') setIsLoading(false);
+    }, [user]);
+
+    if (isLoading) return <span>loading...</span>;
 
     return (
         <Router>
