@@ -1,5 +1,10 @@
 import React, { useContext } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import {
+    BrowserRouter as Router,
+    Route,
+    Switch,
+    Redirect,
+} from 'react-router-dom';
 
 import Container from 'react-bootstrap/Container';
 
@@ -21,16 +26,25 @@ const Main = () => {
                     <Route path="/" exact component={Home} />
                     {user ? (
                         <Route path="/quiz/:quizId/edit" component={QuizEdit} />
-                    ) : null}
+                    ) : (
+                        <Redirect
+                            from="/quiz/:quizId/edit"
+                            to="/register_login"
+                        />
+                    )}
                     {user ? (
                         <Route path="/quizzes" component={QuizList} />
-                    ) : null}
+                    ) : (
+                        <Redirect from="/quizzes" to="/register_login" />
+                    )}
                     {!user ? (
                         <Route
                             path="/register_login"
                             component={RegisterLogin}
                         />
-                    ) : null}
+                    ) : (
+                        <Redirect from="/register_login" to="/" />
+                    )}
                 </Switch>
             </Container>
         </Router>
