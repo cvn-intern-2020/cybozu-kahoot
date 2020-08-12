@@ -15,7 +15,7 @@ import NavBar from '../NavBar/NavBar';
 import QuizEdit from '../../../components/Quiz/QuizEdit/QuizEdit';
 import { UserContext } from '../../../contexts/UserContext';
 
-const Main = () => {
+const App = () => {
     const user = useContext(UserContext);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -58,4 +58,4 @@ const Main = () => {
     );
 };
 
-export default Main;
+export default App;

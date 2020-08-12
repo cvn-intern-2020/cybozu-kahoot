@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Main from './common/components/Main/Main';
+import App from './common/components/Main/App';
 import UserContextProvider from './contexts/UserContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './GlobalStyles.css';
@@ -8,7 +8,7 @@ import './GlobalStyles.css';
 ReactDOM.render(
     <React.StrictMode>
         <UserContextProvider>
-            <Main />
+            <App />
         </UserContextProvider>
     </React.StrictMode>,
     document.getElementById('root')
