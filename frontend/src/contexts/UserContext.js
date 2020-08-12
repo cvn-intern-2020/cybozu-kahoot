@@ -5,7 +5,7 @@ import { getUser } from './services';
 export const UserContext = createContext();
 
 const UserContextProvider = (props) => {
-    const [data, setData] = useState({ email: '' });
+    const [data, setData] = useState();
 
     useEffect(() => {
         async function fetchUser() {

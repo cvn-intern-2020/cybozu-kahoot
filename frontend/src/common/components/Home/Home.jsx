@@ -1,12 +1,10 @@
-import React, { useContext } from 'react';
-import { UserContext } from '../../../contexts/UserContext';
+import React from 'react';
+import PinInput from './PinInput';
 
 const Home = () => {
-    const data = useContext(UserContext);
     return (
-        <div>
-            <h1>Home</h1>
-            {data ? <p>Welcome back, {data.email}.</p> : null}
+        <div className="d-flex justify-content-center align-items-center flex-grow-1">
+            <PinInput />
         </div>
     );
 };
