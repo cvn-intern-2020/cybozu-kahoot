@@ -33,6 +33,9 @@ app.use(
         resave: false,
         saveUninitialized: true,
         store: new MongoStore({ mongooseConnection: mongoose.connection }),
+        cookie: {
+            maxAge: config.cookieMaxAge,
+        },
     })
 );
 
