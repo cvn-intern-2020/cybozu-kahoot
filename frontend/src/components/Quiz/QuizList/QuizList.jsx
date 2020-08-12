@@ -16,7 +16,7 @@ const QuizList = () => {
     };
 
     return (
-        <Container>
+        <Container className="mt-3">
             {quizzes.map((quiz) => (
                 <QuizItem key={quiz._id} quiz={quiz} onUpdate={onUpdate} />
             ))}
