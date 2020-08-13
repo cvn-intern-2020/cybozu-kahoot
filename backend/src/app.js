@@ -4,6 +4,7 @@ const session = require('express-session');
 const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo')(session);
 const passport = require('./passport/setup');
+const socket = require('socket.io');
 
 const config = require('./config');
 const routes = require('./routes');
@@ -43,4 +44,10 @@ app.use(passport.session());
 
 app.use('/api', routes);
 
-app.listen(config.port, () => console.log(`Server started on ${config.port}`));
+const server = app.listen(config.port, () =>
+    console.log(`Server started on ${config.port}`)
+);
+
+const io = socket(server);
+
+require('./game')(io);

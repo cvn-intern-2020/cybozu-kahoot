@@ -13,6 +13,8 @@ import RegisterLogin from '../../../components/RegisterLogin/RegisterLogin';
 import QuizList from '../../../components/Quiz/QuizList/QuizList';
 import NavBar from '../NavBar/NavBar';
 import QuizEdit from '../../../components/Quiz/QuizEdit/QuizEdit';
+import Host from '../../../components/Play/Host';
+import Join from '../../../components/Play/Join';
 import { UserContext } from '../../../contexts/UserContext';
 
 const App = () => {
@@ -31,6 +33,8 @@ const App = () => {
                 <NavBar></NavBar>
                 <Switch>
                     <Route path="/" exact component={Home} />
+                    <Route path="/host/:roomId" component={Host} />
+                    <Route path="/join/:roomId" component={Join} />
                     {user ? (
                         <Route path="/quiz/:quizId/edit" component={QuizEdit} />
                     ) : (
