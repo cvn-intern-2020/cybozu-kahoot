@@ -33,7 +33,7 @@ const App = () => {
                 <NavBar></NavBar>
                 <Switch>
                     <Route path="/" exact component={Home} />
-                    <Route path="/host/:roomId" component={Host} />
+                    <Route path="/host/:quizId" component={Host} />
                     <Route path="/join/:roomId" component={Join} />
                     {user ? (
                         <Route path="/quiz/:quizId/edit" component={QuizEdit} />

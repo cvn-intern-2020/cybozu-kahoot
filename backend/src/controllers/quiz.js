@@ -28,8 +28,7 @@ const getQuizzesController = async (req, res) => {
 const getSingleQuizController = async (req, res) => {
     const { quizId } = req.params;
 
-    const userId = req.user.id;
-    const foundQuiz = await findQuizById(quizId, userId);
+    const foundQuiz = await findQuizById(quizId);
     if (!foundQuiz.errors) return res.status(200).json(foundQuiz);
 
     return res.status(500).json({ errors: foundQuiz.errors });

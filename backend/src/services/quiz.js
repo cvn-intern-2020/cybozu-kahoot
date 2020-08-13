@@ -28,9 +28,9 @@ const findQuizzesByUserId = async (userId) => {
     }
 };
 
-const findQuizById = async (id, userId) => {
+const findQuizById = async (id) => {
     try {
-        const foundQuiz = await Quiz.findOne({ _id: id, author: userId });
+        const foundQuiz = await Quiz.findById(id);
 
         if (!foundQuiz) return { errors: 'Quiz not found' };
         return foundQuiz;
