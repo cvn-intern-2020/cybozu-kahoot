@@ -27,13 +27,12 @@ module.exports = (io) => {
             let playerNameList = [];
             roomPlayers.forEach((p) => playerNameList.push(p.nickname));
             const game = Game.findGameById(player.room);
-            io.to(game.hostId).emit('playerList', playerNameList);
+            io.to(game.id).emit('playerList', playerNameList);
         });
 
         socket.on('nextQuestion', () => {
             const game = Game.findGameByHostId(socket.id);
             game.setCurrentQuestion(Date.now() + WAITING_TIME);
-            console.log(game.currentQuestion);
             socket.broadcast
                 .to(game.id)
                 .emit('nextQuestion', game.currentQuestion);
