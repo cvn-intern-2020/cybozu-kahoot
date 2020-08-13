@@ -39,13 +39,18 @@ const QuizItem = ({ quiz, onUpdate }) => {
 
                         <Row className="px-2 px-lg-5 mb-3">
                             <Col lg className="mt-2 mt-lg-0">
-                                <Button
-                                    variant="warning"
-                                    block
-                                    className={`${styles.button} text-white shadow`}
+                                <Link
+                                    to={`/host/${quiz._id}`}
+                                    style={{ textDecoration: 'none' }}
                                 >
-                                    Host
-                                </Button>
+                                    <Button
+                                        variant="warning"
+                                        block
+                                        className={`${styles.button} text-white shadow`}
+                                    >
+                                        Host
+                                    </Button>
+                                </Link>
                             </Col>
                             <Col lg className="mt-2 mt-lg-0">
                                 <Link

@@ -4,9 +4,11 @@ import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import Countdown from '../../common/components/Countdown/Countdown';
+import Card from 'react-bootstrap/Card';
 
+import Countdown from '../../common/components/Countdown/Countdown';
 import Config from '../../config/index';
+import styles from './Join.module.css';
 
 const Join = () => {
     const { roomId } = useParams();
@@ -40,22 +42,39 @@ const Join = () => {
     }, []);
 
     return (
-        <div>
-            <Form onSubmit={handleSubmit(onSubmit)}>
-                <Form.Group controlId="formNickname">
-                    <Form.Label>Nickname</Form.Label>
-                    <Form.Control
-                        type="text"
-                        placeholder="Enter nickname"
-                        ref={register()}
-                        name="nickname"
-                        size="lg"
-                    ></Form.Control>
-                </Form.Group>
-                <Button variant="danger" block type="submit" size="lg">
-                    Submit
-                </Button>
-            </Form>
+        <div className="d-flex justify-content-center align-items-center flex-grow-1">
+            <Card className="mb-5 shadow-lg mx-4">
+                <Card.Body>
+                    <Form
+                        onSubmit={handleSubmit(onSubmit)}
+                        className={`${styles.form} text-center`}
+                    >
+                        <Form.Group controlId="formNickname">
+                            <Form.Label className="h3 mb-1">
+                                What's your nickname?
+                            </Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="Enter nickname"
+                                ref={register()}
+                                name="nickname"
+                                size="lg"
+                                className={`${styles.inputNickname} text-center`}
+                            ></Form.Control>
+                        </Form.Group>
+                        <Button
+                            variant="danger"
+                            block
+                            type="submit"
+                            size="lg"
+                            className={`${styles.form} mt-3`}
+                        >
+                            Join
+                        </Button>
+                    </Form>
+                </Card.Body>
+            </Card>
+
             {isCountdown ? <Countdown time={currentQuestionStartTime} /> : null}
         </div>
     );
