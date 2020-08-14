@@ -16,10 +16,20 @@ const Host = () => {
     const renderSwitch = (currentScene) => {
         switch (currentScene) {
             case 'waiting':
-                return <PlayerList pin={roomId} players={playerList} />;
+                return (
+                    <PlayerList
+                        pin={roomId}
+                        players={playerList}
+                        onStart={onNext}
+                    />
+                );
             default:
                 return null;
         }
+    };
+
+    const onNext = () => {
+        socketRef.current.emit('nextQuestion');
     };
 
     useEffect(() => {

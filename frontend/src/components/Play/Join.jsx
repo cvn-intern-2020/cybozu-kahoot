@@ -5,6 +5,8 @@ import { useParams } from 'react-router-dom';
 import Config from '../../config/index';
 import NicknameInput from './NicknameInput/NicknameInput';
 import PlayerList from './PlayerList/PlayerList';
+import Countdown from './Countdown/Countdown';
+import Question from './Question/Question';
 
 const Join = () => {
     const { roomId } = useParams();
@@ -14,6 +16,13 @@ const Join = () => {
     const [scene, setScene] = useState('naming');
     const [nickname, setNickname] = useState('No name');
     const [playerList, setPlayerList] = useState([]);
+    const [score, setScore] = useState(0);
+    const [nextQuestionTime, setNextQuestionTime] = useState();
+    const [currentQuestion, setCurrentQuestion] = useState();
+
+    const handleAnswer = (answerId) => {
+        socketRef.current.emit('submitAnswer', { id: answerId });
+    };
 
     useEffect(() => {
         socketRef.current = io(Config.backendURL);
@@ -21,7 +30,11 @@ const Join = () => {
         socketRef.current.emit('playerJoin', { roomId });
 
         socketRef.current.on('nextQuestion', (question) => {
-            console.log(question);
+            const timeTillQuestion = question.startTime - Date.now();
+            setCurrentQuestion(question.question);
+            setNextQuestionTime(question.startTime);
+            if (timeTillQuestion > 0) setScene('counting');
+            setTimeout(() => setScene('answering'), timeTillQuestion);
         });
 
         socketRef.current.on('playerList', (playerNameList) => {
@@ -42,6 +55,16 @@ const Join = () => {
                 );
             case 'waiting':
                 return <PlayerList pin={roomId} players={playerList} />;
+            case 'counting':
+                return <Countdown time={nextQuestionTime} />;
+            case 'answering':
+                return (
+                    <Question
+                        question={currentQuestion}
+                        startTime={nextQuestionTime}
+                        onAnswer={handleAnswer}
+                    />
+                );
             default:
                 return null;
         }

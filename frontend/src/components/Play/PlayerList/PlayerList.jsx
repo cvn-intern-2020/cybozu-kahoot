@@ -14,20 +14,27 @@ const PlayerList = ({ pin, players, onStart }) => {
                     <p className={`${styles.title} text-center`}>PIN: {pin}</p>
                     <Card.Text className={styles.text}>
                         Players: {players.length}
-                        {players.length > 0 ? (
-                            <ListGroup horizontal="lg" className="my-2">
-                                {players.map((player) => (
-                                    <ListGroup.Item>{player}</ListGroup.Item>
-                                ))}
-                            </ListGroup>
-                        ) : null}
                     </Card.Text>
-                    {pin ? (
+                    {players.length > 0 ? (
+                        <ListGroup
+                            horizontal="lg"
+                            className={`my-2 ${styles.text}`}
+                        >
+                            {players.map((player) => (
+                                <ListGroup.Item key={player}>
+                                    {player}
+                                </ListGroup.Item>
+                            ))}
+                        </ListGroup>
+                    ) : null}
+
+                    {pin && onStart ? (
                         <Button
                             variant="danger"
                             block
                             size="lg"
                             className={`${styles.button} mt-auto`}
+                            onClick={() => onStart()}
                         >
                             Start
                         </Button>
