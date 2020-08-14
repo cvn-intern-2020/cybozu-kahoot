@@ -97,6 +97,9 @@ class Game {
     get userNumberIncrement() {
         return this._userNumberIncrement++;
     }
+    get questionLeft() {
+        return this._quiz.questions.length;
+    }
     isAnswerCorrect(answerId) {
         return this._currentQuestion.correctAnswers.findIndex(
             (a) => a === answerId
@@ -130,6 +133,10 @@ class Game {
     }
     static isDuplicatedId(gameId) {
         return games.findIndex((g) => g.id === gameId) !== -1;
+    }
+    static deleteGameById(gameId) {
+        const index = games.findIndex((g) => g.id === gameId);
+        return games.splice(index, 1);
     }
 }
 

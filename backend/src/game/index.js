@@ -14,10 +14,9 @@ module.exports = (io) => {
 
         socket.on('playerJoin', ({ roomId }) => {
             console.log('player join');
-            const game = Game.findGameById(roomId);
             socket.join(roomId);
-            new Player(socket.id, roomId);
-            io.to(game.hostId).emit('playerJoin');
+            const newPlayer = new Player(socket.id, roomId);
+            socket.emit('playerNum', { number: newPlayer.number });
         });
 
         socket.on('registerNickname', ({ nickname }) => {
@@ -25,12 +24,14 @@ module.exports = (io) => {
             player.setNickname(nickname);
             const roomPlayers = Player.findPlayersByRoomId(player.room);
             let playerNameList = [];
-            roomPlayers.forEach((p) => playerNameList.push(p.nickname));
+            roomPlayers.forEach((p) =>
+                playerNameList.push({ number: p.number, nickname: p.nickname })
+            );
             const game = Game.findGameById(player.room);
             io.to(game.id).emit('playerList', playerNameList);
         });
 
-        const sendMidResult = (game) => {
+        const sendResult = (game, isEnd) => {
             const currentQuestion = game.currentQuestion;
             let roomPlayers = Player.findPlayersByRoomId(game.id);
             roomPlayers.sort((a, b) => b.score - a.score);
@@ -50,19 +51,22 @@ module.exports = (io) => {
                     score: roomPlayers[i].score,
                 });
             }
-            io.to(game.id).emit('midResult', { correctAnswers, leaderboard });
+            io.to(game.id).emit('result', {
+                isEnd,
+                correctAnswers,
+                leaderboard,
+            });
         };
 
         socket.on('nextQuestion', () => {
             const game = Game.findGameByHostId(socket.id);
             game.setCurrentQuestion(Date.now() + WAITING_TIME);
-            socket.broadcast
-                .to(game.id)
-                .emit('nextQuestion', game.currentQuestion);
+            io.to(game.id).emit('nextQuestion', game.currentQuestion);
             setTimeout(
-                sendMidResult,
+                sendResult,
                 WAITING_TIME + game.currentQuestion.question.timeLimit * 1000,
-                game
+                game,
+                game.questionLeft === 0
             );
         });
 

@@ -7,7 +7,7 @@ import NicknameInput from './NicknameInput/NicknameInput';
 import PlayerList from './PlayerList/PlayerList';
 import Countdown from './Countdown/Countdown';
 import Question from './Question/Question';
-import MidResult from './MidResult/MidResult';
+import Result from './Result/Result';
 
 const Join = () => {
     const { roomId } = useParams();
@@ -22,6 +22,7 @@ const Join = () => {
     const [currentQuestion, setCurrentQuestion] = useState();
     const [leaderboard, setLeaderboard] = useState();
     const [correctAnswers, setCorrectAnswers] = useState();
+    const [playerNum, setPlayerNum] = useState();
 
     const handleAnswer = (answerId) => {
         socketRef.current.emit('submitAnswer', { id: answerId });
@@ -44,16 +45,16 @@ const Join = () => {
             setPlayerList(playerNameList);
         });
 
-        socketRef.current.on('midResult', ({ correctAnswers, leaderboard }) => {
+        socketRef.current.on('result', ({ correctAnswers, leaderboard }) => {
             setCorrectAnswers(correctAnswers);
             setLeaderboard(leaderboard);
-            setScene('midResult');
+            setScene('result');
+        });
+
+        socketRef.current.on('playerNum', ({ number }) => {
+            setPlayerNum(number);
         });
     }, []);
-
-    useEffect(() => {
-        console.log('a', currentQuestion);
-    }, [currentQuestion]);
 
     const renderSwitch = (currentScene) => {
         switch (currentScene) {
@@ -78,11 +79,12 @@ const Join = () => {
                         onAnswer={handleAnswer}
                     />
                 );
-            case 'midResult':
+            case 'result':
                 return (
-                    <MidResult
+                    <Result
                         correctAnswers={correctAnswers}
                         leaderboard={leaderboard}
+                        playerNum={playerNum}
                     />
                 );
             default:

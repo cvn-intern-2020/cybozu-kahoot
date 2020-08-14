@@ -21,8 +21,8 @@ const PlayerList = ({ pin, players, onStart }) => {
                             className={`my-2 ${styles.text}`}
                         >
                             {players.map((player) => (
-                                <ListGroup.Item key={player}>
-                                    {player}
+                                <ListGroup.Item key={player.number}>
+                                    {player.nickname}
                                 </ListGroup.Item>
                             ))}
                         </ListGroup>

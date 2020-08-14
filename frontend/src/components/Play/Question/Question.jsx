@@ -14,7 +14,10 @@ const Question = ({ question, startTime, onAnswer }) => {
                     {question.answers.map((answer) => (
                         <Button
                             key={answer.id}
-                            onClick={() => onAnswer(answer.id)}
+                            disabled={!onAnswer ? true : false}
+                            onClick={() =>
+                                onAnswer ? onAnswer(answer.id) : null
+                            }
                         >
                             {answer.title}
                         </Button>
