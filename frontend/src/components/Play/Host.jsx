@@ -60,6 +60,8 @@ const Host = () => {
                 setScene('result');
             }
         );
+
+        return () => socketRef.current.close();
     }, []);
 
     const renderSwitch = (currentScene) => {

@@ -51,7 +51,9 @@ class Player extends User {
         return this._number;
     }
     static findPlayersByRoomId(roomId) {
-        return users.filter((u) => u.room === roomId);
+        return users.filter(
+            (u) => u.constructor.name === 'Player' && u.room === roomId
+        );
     }
 }
 
@@ -62,7 +64,7 @@ class Game {
             randomNumber = (Math.floor(Math.random() * 999999) + 1)
                 .toString()
                 .padStart(6, '0');
-        } while (Game.isDuplicatedId(randomNumber));
+        } while (Game.isExist(randomNumber));
         this._id = randomNumber;
         this._host = hostId;
         this._quizId = quizId;
@@ -131,7 +133,7 @@ class Game {
     static findGameByHostId(hostId) {
         return games.find((g) => g.hostId === hostId);
     }
-    static isDuplicatedId(gameId) {
+    static isExist(gameId) {
         return games.findIndex((g) => g.id === gameId) !== -1;
     }
     static deleteGameById(gameId) {
@@ -144,4 +146,5 @@ module.exports = {
     Host,
     Player,
     Game,
+    User,
 };

@@ -1,4 +1,4 @@
-const { Game, Player } = require('./model');
+const { Game, Player, User, Host } = require('./model');
 
 const WAITING_TIME = 500;
 
@@ -9,11 +9,13 @@ module.exports = (io) => {
             let game = new Game(socket.id, quizId);
             await game.fetchQuizData();
             socket.join(game.id);
+            new Host(socket.id, game.id);
             socket.emit('roomCreated', { id: game.id, quiz: game.quiz });
         });
 
         socket.on('playerJoin', ({ roomId }) => {
             console.log('player join');
+            if (!Game.isExist(roomId)) return socket.emit('roomNotFound');
             socket.join(roomId);
             const newPlayer = new Player(socket.id, roomId);
             socket.emit('playerNum', { number: newPlayer.number });
@@ -21,6 +23,7 @@ module.exports = (io) => {
 
         socket.on('registerNickname', ({ nickname }) => {
             const player = Player.findUserById(socket.id);
+            if (!player) return;
             player.setNickname(nickname);
             const roomPlayers = Player.findPlayersByRoomId(player.room);
             let playerNameList = [];
@@ -93,6 +96,16 @@ module.exports = (io) => {
                 }
             }
             console.log(currentQuestion.startTime);
+        });
+
+        socket.on('disconnect', () => {
+            console.log('disconnect');
+            const user = User.findUserById(socket.id);
+            if (!user) return;
+            if (user.constructor.name === 'Host') {
+                io.to(user.room).emit('hostDisconnected');
+                Game.deleteGameById(user.room);
+            }
         });
     });
 };

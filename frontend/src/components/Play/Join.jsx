@@ -3,6 +3,7 @@ import io from 'socket.io-client';
 import { useParams } from 'react-router-dom';
 
 import Config from '../../config/index';
+import { redirect } from '../../common/utils';
 import NicknameInput from './NicknameInput/NicknameInput';
 import PlayerList from './PlayerList/PlayerList';
 import Countdown from './Countdown/Countdown';
@@ -33,6 +34,8 @@ const Join = () => {
 
         socketRef.current.emit('playerJoin', { roomId });
 
+        socketRef.current.on('roomNotFound', () => redirect('/'));
+
         socketRef.current.on('nextQuestion', (question) => {
             const timeTillQuestion = question.startTime - Date.now();
             setCurrentQuestion(question.question);
@@ -54,6 +57,8 @@ const Join = () => {
         socketRef.current.on('playerNum', ({ number }) => {
             setPlayerNum(number);
         });
+
+        socketRef.current.on('hostDisconnected', () => redirect('/'));
     }, []);
 
     const renderSwitch = (currentScene) => {
