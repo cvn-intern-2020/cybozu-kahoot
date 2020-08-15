@@ -9,6 +9,10 @@ class User {
         this._room = roomId;
         users.push(this);
     }
+    deleteUser() {
+        const userIndex = users.findIndex((u) => u.id === this.id);
+        return users.splice(userIndex, 1);
+    }
     get id() {
         return this._id;
     }
@@ -17,6 +21,12 @@ class User {
     }
     static findUserById(userId) {
         return users.find((u) => u.id === userId);
+    }
+    static deleteUsersByRoomId(roomId) {
+        for (let i = 0; i < users.length; i++) {
+            if (users[i].room === roomId) users.splice(i, 1);
+            i--;
+        }
     }
 }
 
@@ -29,6 +39,7 @@ class Player extends User {
         this._nickname = 'No name';
         const game = Game.findGameById(roomId);
         this._number = game.userNumberIncrement;
+        this._connected = true;
     }
     setNickname(nickname) {
         this._nickname = nickname;
@@ -40,6 +51,9 @@ class Player extends User {
         const score = Math.floor((point * timeLeft) / timeLimit);
         this._score += score;
         return score;
+    }
+    get connected() {
+        return this._connected;
     }
     get nickname() {
         return this._nickname;
@@ -70,6 +84,7 @@ class Game {
         this._quizId = quizId;
         this._currentQuestion = null;
         this._userNumberIncrement = 0;
+        this._totalPlayersNum = 0;
         games.push(this);
     }
     get id() {
@@ -101,6 +116,12 @@ class Game {
     }
     get questionLeft() {
         return this._quiz.questions.length;
+    }
+    get totalPlayersNum() {
+        return this._totalPlayersNum;
+    }
+    get currentAnswersNum() {
+        return this._currentAnswered.length;
     }
     isAnswerCorrect(answerId) {
         return this._currentQuestion.correctAnswers.findIndex(

@@ -15,8 +15,10 @@ module.exports = (io) => {
 
         socket.on('playerJoin', ({ roomId }) => {
             console.log('player join');
-            if (!Game.isExist(roomId)) return socket.emit('roomNotFound');
+            const game = Game.findGameById(roomId);
+            if (!game) return socket.emit('roomNotFound');
             socket.join(roomId);
+            game._totalPlayersNum += 1;
             const newPlayer = new Player(socket.id, roomId);
             socket.emit('playerNum', { number: newPlayer.number });
         });
@@ -93,6 +95,8 @@ module.exports = (io) => {
                         console.log('incorrect');
                     }
                     console.log(player.score);
+                    if (game.totalPlayersNum <= game.currentAnswersNum)
+                        sendResult(game, game.questionLeft === 0);
                 }
             }
             console.log(currentQuestion.startTime);
@@ -104,7 +108,12 @@ module.exports = (io) => {
             if (!user) return;
             if (user.constructor.name === 'Host') {
                 io.to(user.room).emit('hostDisconnected');
+                User.deleteUsersByRoomId(user.room);
                 Game.deleteGameById(user.room);
+            } else {
+                user._connected = false;
+                const game = Game.findGameById(user.room);
+                game._totalPlayersNum--;
             }
         });
     });

@@ -59,6 +59,8 @@ const Join = () => {
         });
 
         socketRef.current.on('hostDisconnected', () => redirect('/'));
+
+        return () => socketRef.current.close();
     }, []);
 
     const renderSwitch = (currentScene) => {
