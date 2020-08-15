@@ -85,6 +85,7 @@ class Game {
         this._currentQuestion = null;
         this._userNumberIncrement = 0;
         this._totalPlayersNum = 0;
+        this._currentOnlineAnsweredNum = 0;
         games.push(this);
     }
     get id() {
@@ -120,8 +121,8 @@ class Game {
     get totalPlayersNum() {
         return this._totalPlayersNum;
     }
-    get currentAnswersNum() {
-        return this._currentAnswered.length;
+    get currentOnlineAnswersNum() {
+        return this._currentOnlineAnsweredNum;
     }
     isAnswerCorrect(answerId) {
         return this._currentQuestion.correctAnswers.findIndex(
@@ -139,11 +140,13 @@ class Game {
     }
     addAnswer(player, answer, time) {
         this._currentAnswered.push({ player, answer, time });
+        this._currentOnlineAnsweredNum++;
     }
     setCurrentQuestion(startTime) {
         this._currentQuestion = this._quiz.questions.shift();
         this._currentQuestionStartTime = startTime;
         this._currentAnswered = [];
+        this._currentOnlineAnsweredNum = 0;
     }
     async fetchQuizData() {
         this._quiz = await findQuizById(this.quizId);

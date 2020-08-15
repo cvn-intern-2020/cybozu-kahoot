@@ -36,8 +36,9 @@ module.exports = (io) => {
             io.to(game.id).emit('playerList', playerNameList);
         });
 
-        const sendResult = (game, isEnd) => {
+        const sendResult = (game, questionId) => {
             const currentQuestion = game.currentQuestion;
+            if (currentQuestion.question._id !== questionId) return;
             let roomPlayers = Player.findPlayersByRoomId(game.id);
             roomPlayers.sort((a, b) => b.score - a.score);
             const correctAnswers = currentQuestion.question.correctAnswers.map(
@@ -57,7 +58,7 @@ module.exports = (io) => {
                 });
             }
             io.to(game.id).emit('result', {
-                isEnd,
+                isEnd: game.questionLeft === 0,
                 correctAnswers,
                 leaderboard,
             });
@@ -66,12 +67,13 @@ module.exports = (io) => {
         socket.on('nextQuestion', () => {
             const game = Game.findGameByHostId(socket.id);
             game.setCurrentQuestion(Date.now() + WAITING_TIME);
-            io.to(game.id).emit('nextQuestion', game.currentQuestion);
+            const currentQuestion = game.currentQuestion;
+            io.to(game.id).emit('nextQuestion', currentQuestion);
             setTimeout(
                 sendResult,
                 WAITING_TIME + game.currentQuestion.question.timeLimit * 1000,
                 game,
-                game.questionLeft === 0
+                currentQuestion.question._id
             );
         });
 
@@ -94,12 +96,10 @@ module.exports = (io) => {
                     } else {
                         console.log('incorrect');
                     }
-                    console.log(player.score);
-                    if (game.totalPlayersNum <= game.currentAnswersNum)
-                        sendResult(game, game.questionLeft === 0);
+                    if (game.totalPlayersNum <= game.currentOnlineAnswersNum)
+                        sendResult(game, currentQuestion.question._id);
                 }
             }
-            console.log(currentQuestion.startTime);
         });
 
         socket.on('disconnect', () => {
@@ -114,6 +114,10 @@ module.exports = (io) => {
                 user._connected = false;
                 const game = Game.findGameById(user.room);
                 game._totalPlayersNum--;
+                if (game.totalPlayersNum <= game.currentOnlineAnswersNum) {
+                    const currentQuestion = game.currentQuestion;
+                    sendResult(game, currentQuestion.question.id);
+                }
             }
         });
     });
