@@ -17,6 +17,7 @@ const Host = () => {
     const [currentQuestion, setCurrentQuestion] = useState();
     const [leaderboard, setLeaderboard] = useState();
     const [correctAnswers, setCorrectAnswers] = useState();
+    const [currentCorrectAnswers, setCurrentCorrectAnswers] = useState();
     const [isEnd, setIsEnd] = useState(false);
 
     const [scene, setScene] = useState('waiting');
@@ -50,6 +51,10 @@ const Host = () => {
             if (timeTillQuestion > 0) setScene('counting');
             setTimeout(() => setScene('answering'), timeTillQuestion);
         });
+
+        socketRef.current.on('currentCorrectAnswers', (currentCorrectAnswers) =>
+            setCurrentCorrectAnswers(currentCorrectAnswers)
+        );
 
         socketRef.current.on(
             'result',

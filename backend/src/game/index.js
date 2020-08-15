@@ -67,13 +67,26 @@ module.exports = (io) => {
         socket.on('nextQuestion', () => {
             const game = Game.findGameByHostId(socket.id);
             game.setCurrentQuestion(Date.now() + WAITING_TIME);
-            const currentQuestion = game.currentQuestion;
-            io.to(game.id).emit('nextQuestion', currentQuestion);
+            const { correctAnswers } = game.currentQuestion.question;
+            const { question } = game.currentQuestion;
+            const sendingQuesion = {
+                number: question.number,
+                title: question.title,
+                timeLimit: question.timeLimit,
+                point: question.point,
+                media: question.media,
+                answers: question.answers,
+            };
+            io.in(game.id).emit('nextQuestion', {
+                question: sendingQuesion,
+                startTime: game.currentQuestion.startTime,
+            });
+            io.to(game.host).emit('currentCorrectAnswers', correctAnswers);
             setTimeout(
                 sendResult,
                 WAITING_TIME + game.currentQuestion.question.timeLimit * 1000,
                 game,
-                currentQuestion.question._id
+                game.currentQuestion.question._id
             );
         });
 

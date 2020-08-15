@@ -13,7 +13,7 @@ const Result = ({ correctAnswers, leaderboard, playerNum, onNext, isEnd }) => {
                             <span key={a.id}>{a.title}</span>
                         ))}
                     </p>
-                    <Card.Text>
+                    <div>
                         {leaderboard.map((player) => (
                             <p
                                 key={player.number}
@@ -27,7 +27,7 @@ const Result = ({ correctAnswers, leaderboard, playerNum, onNext, isEnd }) => {
                                 {player.score})
                             </p>
                         ))}
-                    </Card.Text>
+                    </div>
                     {onNext && !isEnd ? (
                         <Button
                             variant="danger"
