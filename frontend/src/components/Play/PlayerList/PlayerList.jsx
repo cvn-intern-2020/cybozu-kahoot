@@ -2,8 +2,9 @@ import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import ListGroup from 'react-bootstrap/ListGroup';
+import Badge from 'react-bootstrap/Badge';
 
+import { keyToVariants } from '../../../common/utils';
 import styles from './PlayerList.module.css';
 
 const PlayerList = ({ pin, players, onStart }) => {
@@ -13,21 +14,19 @@ const PlayerList = ({ pin, players, onStart }) => {
                 <Card.Body className="d-flex flex-column">
                     <p className={`${styles.title} text-center`}>PIN: {pin}</p>
                     <Card.Text className={styles.text}>
-                        Players: {players.length}
+                        <p>Players: {players.length}</p>
+                        {players.length > 0
+                            ? players.map((player) => (
+                                  <Badge
+                                      variant={keyToVariants(player.number)}
+                                      key={player.number}
+                                      className={`${styles.badge} mr-1`}
+                                  >
+                                      {player.nickname}
+                                  </Badge>
+                              ))
+                            : null}
                     </Card.Text>
-                    {players.length > 0 ? (
-                        <ListGroup
-                            horizontal="lg"
-                            className={`my-2 ${styles.text}`}
-                        >
-                            {players.map((player) => (
-                                <ListGroup.Item key={player.number}>
-                                    {player.nickname}
-                                </ListGroup.Item>
-                            ))}
-                        </ListGroup>
-                    ) : null}
-
                     {pin && onStart ? (
                         <Button
                             variant="danger"

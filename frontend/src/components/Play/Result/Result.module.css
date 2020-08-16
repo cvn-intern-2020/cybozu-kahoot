@@ -1,0 +1,25 @@
+.answerContainer {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 5vh;
+    color: black !important;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+    letter-spacing: 0.2rem;
+}
+
+.answer {
+    font-size: 5vh !important;
+    font-family: 'Coiny', cursive;
+}
+
+.leaderboard {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 5vh;
+    width: 50%;
+    min-width: 20vw;
+}
+
+.button {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 5vh !important;
+}

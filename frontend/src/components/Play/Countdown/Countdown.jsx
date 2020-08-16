@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import styles from './Countdown.module.css';
 
 const Countdown = ({ time }) => {
     const now = new Date();
@@ -9,7 +10,7 @@ const Countdown = ({ time }) => {
             counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
         return () => clearInterval(timer);
     }, [counter]);
-    return <div>{Math.ceil(counter)}</div>;
+    return <span class={styles.number}>{Math.ceil(counter)}</span>;
 };
 
 export default Countdown;

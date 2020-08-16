@@ -15,6 +15,7 @@ import NavBar from '../NavBar/NavBar';
 import QuizEdit from '../../../components/Quiz/QuizEdit/QuizEdit';
 import Host from '../../../components/Play/Host';
 import Join from '../../../components/Play/Join';
+import Result from '../../../components/Play/Result/Result';
 import { UserContext } from '../../../contexts/UserContext';
 
 const App = () => {

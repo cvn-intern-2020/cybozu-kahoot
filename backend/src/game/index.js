@@ -1,40 +1,22 @@
 const { Game, Player, User, Host } = require('./model');
 
-const WAITING_TIME = 500;
+const WAITING_TIME = 5000;
 
 module.exports = (io) => {
     io.on('connection', (socket) => {
-        socket.on('hostJoin', async ({ quizId }) => {
-            console.log('host join');
-            let game = new Game(socket.id, quizId);
-            await game.fetchQuizData();
-            socket.join(game.id);
-            new Host(socket.id, game.id);
-            socket.emit('roomCreated', { id: game.id, quiz: game.quiz });
-        });
-
-        socket.on('playerJoin', ({ roomId }) => {
-            console.log('player join');
-            const game = Game.findGameById(roomId);
-            if (!game) return socket.emit('roomNotFound');
-            socket.join(roomId);
-            game._totalPlayersNum += 1;
-            const newPlayer = new Player(socket.id, roomId);
-            socket.emit('playerNum', { number: newPlayer.number });
-        });
-
-        socket.on('registerNickname', ({ nickname }) => {
-            const player = Player.findUserById(socket.id);
-            if (!player) return;
-            player.setNickname(nickname);
-            const roomPlayers = Player.findPlayersByRoomId(player.room);
+        const sendPlayerList = (roomId) => {
+            const roomPlayers = Player.findPlayersByRoomId(roomId);
             let playerNameList = [];
-            roomPlayers.forEach((p) =>
-                playerNameList.push({ number: p.number, nickname: p.nickname })
-            );
-            const game = Game.findGameById(player.room);
+            roomPlayers.forEach((p) => {
+                if (!p.connected) return;
+                playerNameList.push({
+                    number: p.number,
+                    nickname: p.nickname,
+                });
+            });
+            const game = Game.findGameById(roomId);
             io.to(game.id).emit('playerList', playerNameList);
-        });
+        };
 
         const sendResult = (game, questionId) => {
             const currentQuestion = game.currentQuestion;
@@ -63,6 +45,32 @@ module.exports = (io) => {
                 leaderboard,
             });
         };
+
+        socket.on('hostJoin', async ({ quizId }) => {
+            console.log('host join');
+            let game = new Game(socket.id, quizId);
+            await game.fetchQuizData();
+            socket.join(game.id);
+            new Host(socket.id, game.id);
+            socket.emit('roomCreated', { id: game.id, quiz: game.quiz });
+        });
+
+        socket.on('playerJoin', ({ roomId }) => {
+            console.log('player join');
+            const game = Game.findGameById(roomId);
+            if (!game) return socket.emit('roomNotFound');
+            socket.join(roomId);
+            game._totalPlayersNum += 1;
+            const newPlayer = new Player(socket.id, roomId);
+            socket.emit('playerNum', { number: newPlayer.number });
+        });
+
+        socket.on('registerNickname', ({ nickname }) => {
+            const player = Player.findUserById(socket.id);
+            if (!player) return;
+            player.setNickname(nickname);
+            sendPlayerList(player.room);
+        });
 
         socket.on('nextQuestion', () => {
             const game = Game.findGameByHostId(socket.id);
@@ -126,9 +134,11 @@ module.exports = (io) => {
             } else {
                 user._connected = false;
                 const game = Game.findGameById(user.room);
+                sendPlayerList(user.room);
                 game._totalPlayersNum--;
                 if (game.totalPlayersNum <= game.currentOnlineAnswersNum) {
                     const currentQuestion = game.currentQuestion;
+                    if (!currentQuestion.question) return;
                     sendResult(game, currentQuestion.question.id);
                 }
             }
