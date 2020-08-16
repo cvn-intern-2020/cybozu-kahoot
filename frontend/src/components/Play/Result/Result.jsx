@@ -10,6 +10,7 @@ import { keyToVariants } from '../../../common/utils';
 import styles from './Result.module.css';
 
 const Result = ({ correctAnswers, leaderboard, playerNum, onNext, isEnd }) => {
+    console.log(leaderboard, playerNum);
     return (
         <Container>
             <Card className={`shadow-lg mb-4`}>
@@ -36,7 +37,8 @@ const Result = ({ correctAnswers, leaderboard, playerNum, onNext, isEnd }) => {
                                 <ListGroup.Item
                                     key={player.number}
                                     active={
-                                        playerNum && playerNum === player.number
+                                        Number.isInteger(playerNum) &&
+                                        playerNum === player.number
                                             ? true
                                             : null
                                     }
