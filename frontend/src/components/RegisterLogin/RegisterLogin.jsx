@@ -63,7 +63,7 @@ const RegisterLogin = () => {
                         />
                     ) : null}
                     <Form onSubmit={handleSubmit(onSubmit)}>
-                        <Form.Group>
+                        <Form.Group controlId="formEmail">
                             <Form.Label>Email address</Form.Label>
                             <Form.Control
                                 type="email"
@@ -79,7 +79,7 @@ const RegisterLogin = () => {
                                 className={styles.input}
                             ></Form.Control>
                         </Form.Group>
-                        <Form.Group>
+                        <Form.Group controlId="formPassword">
                             <Form.Label>Password</Form.Label>
                             <Form.Control
                                 type="password"

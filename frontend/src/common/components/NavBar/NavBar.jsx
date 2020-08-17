@@ -28,7 +28,7 @@ const NavBar = () => {
             </Link>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
-                <Nav className="ml-auto d-flex mt-2 mt-md-0 justify-content-between">
+                <Nav className="ml-auto d-flex mt-2 mt-md-0 justify-content-between text-right">
                     {!data ? null : (
                         <Link
                             to="/quizzes"
@@ -54,7 +54,7 @@ const NavBar = () => {
                             <NavDropdown.Item>
                                 <Link
                                     to="/change_password"
-                                    className={styles.navLink}
+                                    className={styles.changePasswordLink}
                                 >
                                     Change password
                                 </Link>
