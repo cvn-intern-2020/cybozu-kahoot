@@ -18,7 +18,6 @@ const Join = () => {
     const [scene, setScene] = useState('naming');
     const [nickname, setNickname] = useState('No name');
     const [playerList, setPlayerList] = useState([]);
-    const [score, setScore] = useState(0);
     const [nextQuestionTime, setNextQuestionTime] = useState();
     const [currentQuestion, setCurrentQuestion] = useState();
     const [leaderboard, setLeaderboard] = useState();
@@ -62,7 +61,7 @@ const Join = () => {
         socketRef.current.on('hostDisconnected', () => redirect('/'));
 
         return () => socketRef.current.close();
-    }, []);
+    }, [roomId]);
 
     const renderSwitch = (currentScene) => {
         switch (currentScene) {

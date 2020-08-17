@@ -29,6 +29,7 @@ const NicknameInput = ({ onNicknameSet }) => {
                             name="nickname"
                             size="lg"
                             className={`${styles.inputNickname} text-center`}
+                            autoFocus
                         ></Form.Control>
                     </Form.Group>
                     <Button

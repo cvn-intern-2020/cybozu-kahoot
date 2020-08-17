@@ -66,6 +66,7 @@ const QuizEdit = () => {
                                     name="title"
                                     ref={register({ required: true })}
                                     className={`${styles.quizTitle} h-100`}
+                                    autoFocus
                                 />
                             </InputGroup>
                         </Col>

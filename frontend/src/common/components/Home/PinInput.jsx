@@ -58,6 +58,7 @@ const PinInput = () => {
                             size="lg"
                             className={`${styles.inputPin} text-center`}
                             ref={register()}
+                            autoFocus
                         />
                     </Form.Group>
                     <Button

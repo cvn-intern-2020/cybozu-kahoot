@@ -17,6 +17,7 @@ const Host = () => {
     const [currentQuestion, setCurrentQuestion] = useState();
     const [leaderboard, setLeaderboard] = useState();
     const [correctAnswers, setCorrectAnswers] = useState();
+    // eslint-disable-next-line
     const [currentCorrectAnswers, setCurrentCorrectAnswers] = useState();
     const [isEnd, setIsEnd] = useState(false);
 
@@ -67,7 +68,7 @@ const Host = () => {
         );
 
         return () => socketRef.current.close();
-    }, []);
+    }, [quizId]);
 
     const renderSwitch = (currentScene) => {
         switch (currentScene) {
