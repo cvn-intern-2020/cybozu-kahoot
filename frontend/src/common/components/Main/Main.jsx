@@ -9,6 +9,7 @@ import QuizList from '../../../components/Quiz/QuizList/QuizList';
 import NavBar from '../NavBar/NavBar';
 import QuizEdit from '../../../components/Quiz/QuizEdit/QuizEdit';
 import ProtectedRoute from '../Protected/ProtectedRoute';
+import ChangePassword from '../../../components/ChangePassword/ChangePassword';
 
 const Main = () => {
     return (
@@ -29,6 +30,10 @@ const Main = () => {
                         path="/quizzes"
                         component={QuizList}
                     ></ProtectedRoute>
+                    <Route
+                        path="/change_password"
+                        component={ChangePassword}
+                    ></Route>
                 </Switch>
             </Container>
         </Router>
