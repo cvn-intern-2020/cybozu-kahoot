@@ -1,0 +1,24 @@
+.card {
+    background-color: #ffffffe0 !important;
+}
+
+.thumb {
+    max-height: 11rem;
+}
+
+.title {
+    /* font-family: 'Luckiest Guy', cursive; */
+    font-family: 'Coiny', cursive;
+    font-size: 3rem;
+    letter-spacing: 0.1rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 43rem;
+}
+
+.button {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 1.3rem !important;
+    letter-spacing: 0.1rem;
+}

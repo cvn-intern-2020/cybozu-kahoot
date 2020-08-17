@@ -1,0 +1,28 @@
+.card {
+    min-height: 80vh;
+    background-color: #ffda87f2 !important;
+}
+
+.title {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 4.5rem;
+    color: black !important;
+    letter-spacing: 0.2rem;
+}
+
+.text {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 1.5rem;
+    letter-spacing: 0.2rem;
+}
+
+.badge {
+    font-size: 100% !important;
+}
+
+.button {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 2.25rem !important;
+    letter-spacing: 0.2rem;
+    height: 4rem;
+}
