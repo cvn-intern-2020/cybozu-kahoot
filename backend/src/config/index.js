@@ -12,4 +12,5 @@ module.exports = {
     databaseURL: process.env.MONGODB_URI,
     secret: process.env.SECRET,
     clientURL: process.env.CLIENT_URL,
+    cookieMaxAge: 86400000,
 };

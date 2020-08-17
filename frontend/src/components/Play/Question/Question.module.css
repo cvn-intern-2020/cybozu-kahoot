@@ -1,0 +1,27 @@
+.title {
+    font-size: 2rem !important;
+    font-family: 'Coiny', cursive;
+}
+
+.badge {
+    font-size: 100% !important;
+    font-family: 'Luckiest Guy', cursive;
+}
+
+.media {
+    min-height: 35vh;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+}
+
+.image {
+    min-height: 35vh;
+    background-size: cover;
+    background-position: center;
+}
+
+.answer {
+    font-size: 2rem !important;
+    font-family: 'Coiny', cursive;
+    height: 11vh;
+}

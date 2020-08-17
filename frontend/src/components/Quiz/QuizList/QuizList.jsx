@@ -3,6 +3,7 @@ import Container from 'react-bootstrap/Container';
 
 import { getQuizzes } from '../services';
 import QuizItem from './QuizItem/QuizItem';
+import styles from './QuizList.module.css';
 
 const QuizList = () => {
     const [quizzes, setQuizzes] = useState([]);
@@ -16,7 +17,13 @@ const QuizList = () => {
     };
 
     return (
-        <Container>
+        <Container className="mt-3">
+            {quizzes.length === 0 ? (
+                <div className={`text-white ${styles.text}`}>
+                    <p>Wow, such empty!</p>
+                    <h2>It seems that you haven't created any quiz yet.</h2>
+                </div>
+            ) : null}
             {quizzes.map((quiz) => (
                 <QuizItem key={quiz._id} quiz={quiz} onUpdate={onUpdate} />
             ))}

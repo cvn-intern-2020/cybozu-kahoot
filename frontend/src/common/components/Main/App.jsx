@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
     BrowserRouter as Router,
     Route,
@@ -13,10 +13,20 @@ import RegisterLogin from '../../../components/RegisterLogin/RegisterLogin';
 import QuizList from '../../../components/Quiz/QuizList/QuizList';
 import NavBar from '../NavBar/NavBar';
 import QuizEdit from '../../../components/Quiz/QuizEdit/QuizEdit';
+import Host from '../../../components/Play/Host';
+import Join from '../../../components/Play/Join';
+import Result from '../../../components/Play/Result/Result';
 import { UserContext } from '../../../contexts/UserContext';
 
-const Main = () => {
+const App = () => {
     const user = useContext(UserContext);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        if (typeof user !== 'undefined') setIsLoading(false);
+    }, [user]);
+
+    if (isLoading) return <span>loading...</span>;
 
     return (
         <Router>
@@ -24,6 +34,8 @@ const Main = () => {
                 <NavBar></NavBar>
                 <Switch>
                     <Route path="/" exact component={Home} />
+                    <Route path="/host/:quizId" component={Host} />
+                    <Route path="/join/:roomId" component={Join} />
                     {user ? (
                         <Route path="/quiz/:quizId/edit" component={QuizEdit} />
                     ) : (
@@ -51,4 +63,4 @@ const Main = () => {
     );
 };
 
-export default Main;
+export default App;
