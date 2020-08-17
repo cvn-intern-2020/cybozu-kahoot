@@ -6,6 +6,8 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Col from 'react-bootstrap/Col';
 import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+import Card from 'react-bootstrap/Card';
 
 import {
     getQuiz,
@@ -17,10 +19,18 @@ import {
 } from '../services';
 import { redirect } from '../../../common/utils';
 import QuestionList from './QuestionList';
+import styles from './QuizEdit.module.css';
 
 const QuizEdit = () => {
     const { quizId } = useParams();
-    const { register, control, handleSubmit, getValues, reset } = useForm({
+    const {
+        register,
+        control,
+        handleSubmit,
+        getValues,
+        reset,
+        watch,
+    } = useForm({
         defaultValues: defaultQuiz,
     });
 
@@ -41,30 +51,42 @@ const QuizEdit = () => {
     }, [quizId, reset]);
 
     return (
-        <Form onSubmit={handleSubmit(onSubmit)}>
-            <Form.Row>
-                <Col xs={10}>
-                    <InputGroup className="mb-3">
-                        <InputGroup.Prepend>
-                            <InputGroup.Text>Quiz Title</InputGroup.Text>
-                        </InputGroup.Prepend>
-                        <FormControl
-                            placeholder="Quiz title"
-                            name="title"
-                            ref={register({ required: true })}
+        <Container fluid className="d-flex justify-content-center flex-grow-1">
+            <Card className={`w-100 py-4 px-3 mb-3 shadow ${styles.card}`}>
+                <Form
+                    onSubmit={handleSubmit(onSubmit)}
+                    className="w-100 d-flex flex-column"
+                >
+                    <Form.Row className={`flex-shrink-0 ${styles.form}`}>
+                        <Col xs={8} lg={10} className="px-3">
+                            <InputGroup>
+                                <FormControl
+                                    placeholder="Quiz title"
+                                    name="title"
+                                    ref={register({ required: true })}
+                                    className={`${styles.quizTitle} h-100`}
+                                />
+                            </InputGroup>
+                        </Col>
+                        <Col xs={4} lg={2}>
+                            <Button
+                                variant="danger"
+                                block
+                                type="submit"
+                                className={`${styles.button} h-100`}
+                            >
+                                Done
+                            </Button>
+                        </Col>
+                    </Form.Row>
+                    <Form.Row className="d-flex justify-content-center flex-grow-1">
+                        <QuestionList
+                            {...{ control, register, getValues, watch }}
                         />
-                    </InputGroup>
-                </Col>
-                <Col>
-                    <Button variant="primary" block type="submit">
-                        Done
-                    </Button>
-                </Col>
-            </Form.Row>
-            <Form.Row>
-                <QuestionList {...{ control, register, getValues }} />
-            </Form.Row>
-        </Form>
+                    </Form.Row>
+                </Form>
+            </Card>
+        </Container>
     );
 };
 

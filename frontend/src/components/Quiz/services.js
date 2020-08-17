@@ -31,6 +31,10 @@ const defaultQuiz = {
                     correct: false,
                 },
             ],
+            media: {
+                type: 'image',
+                url: '',
+            },
         },
     ],
 };
@@ -60,6 +64,10 @@ const defaultQuestion = (number) => {
                 title: '',
             },
         ],
+        media: {
+            type: 'image',
+            url: '',
+        },
         correctAnswers: [1],
     };
 };
