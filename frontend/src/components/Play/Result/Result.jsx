@@ -15,6 +15,13 @@ const Result = ({ correctAnswers, leaderboard, playerNum, onNext, isEnd }) => {
         <Container>
             <Card className={`shadow-lg mb-4`}>
                 <Card.Body className="d-flex flex-column">
+                    {isEnd && (
+                        <Row className="justify-content-center">
+                            <p class={styles.answerContainer}>
+                                The quiz has ended!
+                            </p>
+                        </Row>
+                    )}
                     <Row className={styles.answerContainer}>
                         {`Correct answer${
                             correctAnswers.length > 1 ? 's:' : ':'

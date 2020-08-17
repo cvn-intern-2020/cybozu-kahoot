@@ -23,6 +23,7 @@ const Join = () => {
     const [leaderboard, setLeaderboard] = useState();
     const [correctAnswers, setCorrectAnswers] = useState();
     const [playerNum, setPlayerNum] = useState();
+    const [isEnd, setIsEnd] = useState(false);
 
     const handleAnswer = (answerId) => {
         socketRef.current.emit('submitAnswer', { id: answerId });
@@ -48,11 +49,15 @@ const Join = () => {
             setPlayerList(playerNameList);
         });
 
-        socketRef.current.on('result', ({ correctAnswers, leaderboard }) => {
-            setCorrectAnswers(correctAnswers);
-            setLeaderboard(leaderboard);
-            setScene('result');
-        });
+        socketRef.current.on(
+            'result',
+            ({ correctAnswers, leaderboard, isEnd }) => {
+                setCorrectAnswers(correctAnswers);
+                setLeaderboard(leaderboard);
+                setIsEnd(isEnd);
+                setScene('result');
+            }
+        );
 
         socketRef.current.on('playerNum', ({ number }) => {
             setPlayerNum(number);
@@ -92,6 +97,7 @@ const Join = () => {
                         correctAnswers={correctAnswers}
                         leaderboard={leaderboard}
                         playerNum={playerNum}
+                        isEnd={isEnd}
                     />
                 );
             default:
