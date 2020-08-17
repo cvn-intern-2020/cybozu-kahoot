@@ -13,6 +13,9 @@ import RegisterLogin from '../../../components/RegisterLogin/RegisterLogin';
 import QuizList from '../../../components/Quiz/QuizList/QuizList';
 import NavBar from '../NavBar/NavBar';
 import QuizEdit from '../../../components/Quiz/QuizEdit/QuizEdit';
+
+import ChangePassword from '../../../components/ChangePassword/ChangePassword';
+
 import { UserContext } from '../../../contexts/UserContext';
 
 const Main = () => {
@@ -36,6 +39,17 @@ const Main = () => {
                         <Route path="/quizzes" component={QuizList} />
                     ) : (
                         <Redirect from="/quizzes" to="/register_login" />
+                    )}
+                    {user ? (
+                        <Route
+                            path="/change_password"
+                            component={ChangePassword}
+                        ></Route>
+                    ) : (
+                        <Redirect
+                            from="/change_password"
+                            to="/register_login"
+                        />
                     )}
                     {!user ? (
                         <Route

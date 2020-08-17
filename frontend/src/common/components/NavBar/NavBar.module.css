@@ -6,6 +6,15 @@
     letter-spacing: 0.2rem;
 }
 
+.changePasswordLink {
+    color: black !important;
+}
+
+.changePasswordLink:hover {
+    color: black !important;
+    text-decoration: none;
+}
+
 .navLink:hover,
 .navLink:hover > a {
     color: white !important;
