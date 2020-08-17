@@ -4,7 +4,6 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Image from 'react-bootstrap/Image';
 
 import styles from './QuizItem.module.css';
 import { getQuizzes, cloneQuiz, deleteQuiz } from '../../services';
@@ -21,12 +20,15 @@ const QuizItem = ({ quiz, onUpdate }) => {
         <Card className={`text-center mb-4 shadow ${styles.card}`}>
             <Card.Body>
                 <Row>
-                    <Col lg>
-                        <Image
-                            src="/thumb.png"
-                            className={`${styles.thumb} p-2`}
-                        />
-                    </Col>
+                    <Col
+                        lg
+                        style={{
+                            backgroundImage: `url(${
+                                quiz.thumb ? quiz.thumb : '/thumb.png'
+                            })`,
+                        }}
+                        className={`${styles.thumb} p-2 d-none d-lg-inline ml-4`}
+                    ></Col>
                     <Col
                         lg={10}
                         className="d-flex flex-column justify-content-between"

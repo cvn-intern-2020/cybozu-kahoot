@@ -30,6 +30,7 @@ const QuizEdit = () => {
         getValues,
         reset,
         watch,
+        setValue,
     } = useForm({
         defaultValues: defaultQuiz,
     });
@@ -81,7 +82,13 @@ const QuizEdit = () => {
                     </Form.Row>
                     <Form.Row className="d-flex justify-content-center flex-grow-1">
                         <QuestionList
-                            {...{ control, register, getValues, watch }}
+                            {...{
+                                control,
+                                register,
+                                getValues,
+                                watch,
+                                setValue,
+                            }}
                         />
                     </Form.Row>
                 </Form>

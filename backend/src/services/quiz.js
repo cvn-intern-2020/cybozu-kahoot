@@ -16,10 +16,16 @@ const findQuizzesByUserId = async (userId) => {
     try {
         const foundQuizzes = await Quiz.find(
             { author: userId },
-            'title questions createdAt updatedAt'
+            'title media questions createdAt updatedAt'
         ).lean();
 
         return foundQuizzes.map((quiz) => {
+            for (let i = 0; i < quiz.questions.length; i++) {
+                if (quiz.questions[i].media) {
+                    quiz.thumb = quiz.questions[i].media.url;
+                    break;
+                }
+            }
             quiz.questions = quiz.questions.length;
             return quiz;
         });

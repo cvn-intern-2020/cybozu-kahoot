@@ -4,6 +4,8 @@
 
 .thumb {
     max-height: 11rem;
+    background-size: cover;
+    background-position: center;
 }
 
 .title {

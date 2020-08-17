@@ -12,12 +12,12 @@ import styles from './QuestionList.module.css';
 
 import { defaultQuestion } from '../services';
 
-const QuestionList = ({ control, register, watch }) => {
+const QuestionList = ({ control, register, watch, setValue }) => {
     const { fields, append, remove } = useFieldArray({
         control,
         name: 'questions',
     });
-    console.log(fields);
+
     const getMaxQuestionNum = () => {
         let maxQuestionNumber = 1;
         fields.forEach((question) => {
@@ -25,6 +25,13 @@ const QuestionList = ({ control, register, watch }) => {
                 maxQuestionNumber = question.number;
         });
         return maxQuestionNumber;
+    };
+
+    const resetAnswers = (index) => {
+        setValue(`questions[${index}].answers[0].correct`, true);
+        setValue(`questions[${index}].answers[1].correct`, false);
+        setValue(`questions[${index}].answers[2].correct`, false);
+        setValue(`questions[${index}].answers[3].correct`, false);
     };
 
     return (
@@ -175,6 +182,9 @@ const QuestionList = ({ control, register, watch }) => {
                                                 name={`questions[${index}].type`}
                                                 ref={register()}
                                                 defaultValue={item.point}
+                                                onChange={() =>
+                                                    resetAnswers(index)
+                                                }
                                             >
                                                 <option value="single">
                                                     Single
