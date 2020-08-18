@@ -26,7 +26,7 @@ const findQuizzesByUserId = async (userId) => {
 
         return foundQuizzes.map((quiz) => {
             for (let i = 0; i < quiz.questions.length; i++) {
-                if (quiz.questions[i].media) {
+                if (quiz.questions[i].media && quiz.questions[i].media.url) {
                     quiz.thumb = quiz.questions[i].media.url;
                     break;
                 }
