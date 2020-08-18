@@ -23,10 +23,7 @@ class User {
         return users.find((u) => u.id === userId);
     }
     static deleteUsersByRoomId(roomId) {
-        for (let i = 0; i < users.length; i++) {
-            if (users[i].room === roomId) users.splice(i, 1);
-            i--;
-        }
+        users = users.filter((u) => u.room !== roomId);
     }
 }
 
