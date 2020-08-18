@@ -17,7 +17,9 @@ const findQuizzesByUserId = async (userId) => {
         const foundQuizzes = await Quiz.find(
             { author: userId },
             'title media questions createdAt updatedAt'
-        ).lean();
+        )
+            .sort({ updatedAt: 'desc' })
+            .lean();
 
         return foundQuizzes.map((quiz) => {
             for (let i = 0; i < quiz.questions.length; i++) {
@@ -26,7 +28,8 @@ const findQuizzesByUserId = async (userId) => {
                     break;
                 }
             }
-            quiz.questions = quiz.questions.length;
+            quiz.questionsNumber = quiz.questions.length;
+            delete quiz.questions;
             return quiz;
         });
     } catch (err) {

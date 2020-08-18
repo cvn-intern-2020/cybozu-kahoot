@@ -6,7 +6,6 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import InputGroup from 'react-bootstrap/InputGroup';
 import Badge from 'react-bootstrap/Badge';
 import styles from './QuestionList.module.css';
 
@@ -55,12 +54,6 @@ const QuestionList = ({ control, register, watch, setValue }) => {
                         return (
                             <Nav.Item key={item.number} className="w-100">
                                 <Nav.Link
-                                    exact
-                                    to="/faq"
-                                    activeStyle={{
-                                        fontWeight: 'bold',
-                                        backgroundcolor: 'red',
-                                    }}
                                     eventKey={`questions[${index}].number`}
                                     variant="success"
                                 >
@@ -75,7 +68,6 @@ const QuestionList = ({ control, register, watch, setValue }) => {
                                         <Button
                                             type="button"
                                             variant="danger"
-                                            class="close float-right ml-auto"
                                             onClick={() => remove(index)}
                                         >
                                             X
@@ -109,7 +101,7 @@ const QuestionList = ({ control, register, watch, setValue }) => {
                                     <Col sm={9}>
                                         <Row className="mx-0 mb-3 justify-content-center">
                                             <div
-                                                class={`${styles.main_img} p-0 mb-2 mb-sm-0 shadow`}
+                                                className={`${styles.main_img} p-0 mb-2 mb-sm-0 shadow`}
                                                 style={{
                                                     backgroundImage: `url(${watch(
                                                         `questions[${index}].media.url`
@@ -132,25 +124,15 @@ const QuestionList = ({ control, register, watch, setValue }) => {
                                     <Col>
                                         <Form.Group controlId="timeLimit">
                                             <Form.Label>Time limit</Form.Label>
-                                            <InputGroup
+                                            <Form.Control
+                                                type="number"
+                                                name={`questions[${index}].timeLimit`}
+                                                ref={register()}
+                                                defaultValue={item.timeLimit}
+                                                aria-describedby="timeLimit"
+                                                size="lg"
                                                 className={styles.input}
-                                            >
-                                                <Form.Control
-                                                    type="number"
-                                                    name={`questions[${index}].timeLimit`}
-                                                    ref={register()}
-                                                    defaultValue={
-                                                        item.timeLimit
-                                                    }
-                                                    aria-describedby="timeLimit"
-                                                    size="lg"
-                                                />
-                                                <InputGroup.Append className="d-none d-xl-flex">
-                                                    <InputGroup.Text id="timeLimit">
-                                                        seconds
-                                                    </InputGroup.Text>
-                                                </InputGroup.Append>
-                                            </InputGroup>
+                                            />
                                             <Form.Text className="text-muted">
                                                 From 10 to 60 seconds.
                                             </Form.Text>

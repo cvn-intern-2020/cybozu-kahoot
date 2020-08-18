@@ -8,6 +8,7 @@
 
 .changePasswordLink {
     color: black !important;
+    letter-spacing: 0.2rem;
 }
 
 .changePasswordLink:hover {
