@@ -6,7 +6,6 @@ const defaultQuiz = {
         {
             number: 1,
             title: '',
-            type: 'single',
             timeLimit: 15,
             point: 2000,
             answers: [
@@ -43,7 +42,6 @@ const defaultQuestion = (number) => {
     return {
         number,
         title: '',
-        type: 'single',
         timeLimit: 15,
         point: 2000,
         answers: [

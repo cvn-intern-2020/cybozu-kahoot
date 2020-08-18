@@ -18,7 +18,7 @@ const QuestionList = ({ control, register, watch, setValue }) => {
     });
 
     const getMaxQuestionNum = () => {
-        let maxQuestionNumber = 1;
+        let maxQuestionNumber = 0;
         fields.forEach((question) => {
             if (question.number > maxQuestionNumber)
                 maxQuestionNumber = question.number;
@@ -31,6 +31,18 @@ const QuestionList = ({ control, register, watch, setValue }) => {
         setValue(`questions[${index}].answers[1].correct`, false);
         setValue(`questions[${index}].answers[2].correct`, false);
         setValue(`questions[${index}].answers[3].correct`, false);
+    };
+
+    const moveAnswers = (questionIndex, answerId, value) => {
+        if (!value || watch(`questions[${questionIndex}].type`) === 'multi')
+            return;
+        for (let i = 0; i < 4; i++) {
+            if (answerId === i) continue;
+            setValue(
+                `questions[${questionIndex}].answers[${i}].correct`,
+                false
+            );
+        }
     };
 
     return (
@@ -154,7 +166,7 @@ const QuestionList = ({ control, register, watch, setValue }) => {
                                                 From 100 to 10000.
                                             </Form.Text>
                                         </Form.Group>
-                                        <Form.Group controlId="point">
+                                        <Form.Group controlId="type">
                                             <Form.Label>
                                                 Question type
                                             </Form.Label>
@@ -163,10 +175,11 @@ const QuestionList = ({ control, register, watch, setValue }) => {
                                                 className={styles.input}
                                                 name={`questions[${index}].type`}
                                                 ref={register()}
-                                                defaultValue={item.point}
+                                                defaultValue={item.type}
                                                 onChange={() =>
                                                     resetAnswers(index)
                                                 }
+                                                size="lg"
                                             >
                                                 <option value="single">
                                                     Single
@@ -198,6 +211,13 @@ const QuestionList = ({ control, register, watch, setValue }) => {
                                                     defaultChecked={
                                                         item.answers[0].correct
                                                     }
+                                                    onChange={(e) =>
+                                                        moveAnswers(
+                                                            index,
+                                                            0,
+                                                            e.target.value
+                                                        )
+                                                    }
                                                 />
                                             </Form.Label>
                                             <Form.Control
@@ -227,6 +247,13 @@ const QuestionList = ({ control, register, watch, setValue }) => {
                                                     ref={register()}
                                                     defaultChecked={
                                                         item.answers[1].correct
+                                                    }
+                                                    onChange={(e) =>
+                                                        moveAnswers(
+                                                            index,
+                                                            1,
+                                                            e.target.value
+                                                        )
                                                     }
                                                 />
                                             </Form.Label>
@@ -258,6 +285,13 @@ const QuestionList = ({ control, register, watch, setValue }) => {
                                                     defaultChecked={
                                                         item.answers[2].correct
                                                     }
+                                                    onChange={(e) =>
+                                                        moveAnswers(
+                                                            index,
+                                                            2,
+                                                            e.target.value
+                                                        )
+                                                    }
                                                 />
                                             </Form.Label>
                                             <Form.Control
@@ -287,6 +321,13 @@ const QuestionList = ({ control, register, watch, setValue }) => {
                                                     ref={register()}
                                                     defaultChecked={
                                                         item.answers[3].correct
+                                                    }
+                                                    onChange={(e) =>
+                                                        moveAnswers(
+                                                            index,
+                                                            3,
+                                                            e.target.value
+                                                        )
                                                     }
                                                 />
                                             </Form.Label>
