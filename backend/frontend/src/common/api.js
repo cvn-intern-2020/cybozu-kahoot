@@ -1,7 +1,6 @@
-import Config from '../config';
 import { redirect } from './utils';
 
-const apiUrl = `${Config.backendURL}/api`;
+const apiUrl = '/api';
 
 const headers = {
     'Content-Type': 'application/json',

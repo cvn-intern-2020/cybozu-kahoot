@@ -6,10 +6,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './GlobalStyles.css';
 
 ReactDOM.render(
-    <React.StrictMode>
-        <UserContextProvider>
-            <App />
-        </UserContextProvider>
-    </React.StrictMode>,
+    <UserContextProvider>
+        <App />
+    </UserContextProvider>,
     document.getElementById('root')
 );
