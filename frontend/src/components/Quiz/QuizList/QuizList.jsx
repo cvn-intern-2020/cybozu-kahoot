@@ -18,12 +18,12 @@ const QuizList = () => {
 
     return (
         <Container className="mt-3">
-            {quizzes.length === 0 ? (
+            {quizzes.length === 0 && (
                 <div className={`text-white ${styles.text}`}>
                     <p>Wow, such empty!</p>
                     <h2>It seems that you haven't created any quiz yet.</h2>
                 </div>
-            ) : null}
+            )}
             {quizzes.map((quiz) => (
                 <QuizItem key={quiz._id} quiz={quiz} onUpdate={onUpdate} />
             ))}

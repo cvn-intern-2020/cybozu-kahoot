@@ -47,7 +47,6 @@ module.exports = (io) => {
         };
 
         socket.on('hostJoin', async ({ quizId }) => {
-            console.log('host join');
             let game = new Game(socket.id, quizId);
             await game.fetchQuizData();
             socket.join(game.id);
@@ -56,7 +55,6 @@ module.exports = (io) => {
         });
 
         socket.on('playerJoin', ({ roomId }) => {
-            console.log('player join');
             const game = Game.findGameById(roomId);
             if (!game) return socket.emit('roomNotFound');
             socket.join(roomId);
@@ -112,10 +110,7 @@ module.exports = (io) => {
                 if (!game.hasPlayerAnswered(player.id)) {
                     game.addAnswer(player, id, now);
                     if (game.isAnswerCorrect(id)) {
-                        console.log('correct');
                         player.addCorrectScore(now, currentQuestion);
-                    } else {
-                        console.log('incorrect');
                     }
                     if (game.totalPlayersNum <= game.currentOnlineAnswersNum)
                         sendResult(game, currentQuestion.question._id);
@@ -124,7 +119,6 @@ module.exports = (io) => {
         });
 
         socket.on('disconnect', () => {
-            console.log('disconnect');
             const user = User.findUserById(socket.id);
             if (!user) return;
             if (user.constructor.name === 'Host') {

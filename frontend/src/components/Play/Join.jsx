@@ -37,7 +37,6 @@ const Join = () => {
         socketRef.current.on('roomNotFound', () => redirect('/'));
 
         socketRef.current.on('nextQuestion', (question) => {
-            console.log(question);
             const timeTillQuestion = question.startTime - Date.now();
             setCurrentQuestion(question.question);
             setNextQuestionTime(question.startTime);

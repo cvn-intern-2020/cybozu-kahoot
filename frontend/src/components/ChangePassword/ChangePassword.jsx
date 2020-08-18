@@ -20,21 +20,14 @@ const ChangePassword = () => {
     const onSubmit = async (formData) => {
         const result = await changePassword(formData);
 
-        if (result.errors) {
-            setAlert({
-                content: result.errors,
-                variant: 'danger',
-                dismissible: true,
-                show: true,
-            });
-        } else {
-            setAlert({
-                content: 'Password successfully changed.',
-                variant: 'success',
-                dismissible: true,
-                show: true,
-            });
-        }
+        setAlert({
+            content: result.errors
+                ? result.errors
+                : 'Password successfully changed.',
+            variant: result.errors ? 'danger' : 'success',
+            dismissible: true,
+            show: true,
+        });
     };
 
     useEffect(() => {
@@ -52,14 +45,14 @@ const ChangePassword = () => {
         <div className="d-flex justify-content-center align-items-center flex-grow-1">
             <Card className={`${styles.authFormContainer} shadow-lg mb-5`}>
                 <Card.Body>
-                    {alert.show ? (
+                    {alert.show && (
                         <AppAlert
                             variant={alert.variant}
                             content={alert.content}
                             dismissible={alert.dismissible}
                             setShow={setAlert}
                         />
-                    ) : null}
+                    )}
                     <Form onSubmit={handleSubmit(onSubmit)}>
                         <Form.Group>
                             <Form.Label>Current password</Form.Label>

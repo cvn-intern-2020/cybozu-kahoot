@@ -33,12 +33,7 @@ const Host = () => {
         socketRef.current.emit('hostJoin', { quizId });
 
         socketRef.current.on('roomCreated', ({ id, quiz }) => {
-            console.log(quiz);
             setRoomId(id);
-        });
-
-        socketRef.current.on('playerJoin', () => {
-            console.log('a player has joined');
         });
 
         socketRef.current.on('playerList', (playerNameList) => {
