@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 
+const { validateUser } = require('../utils/validators');
 const { findUserById, findUserByEmail, addUser } = require('../services/user');
 
 passport.serializeUser((user, done) => done(null, user.id));
@@ -19,11 +20,14 @@ passport.use(
     new LocalStrategy(
         { usernameField: 'email' },
         async (email, password, done) => {
+            const { error } = validateUser({ email: email.trim(), password });
+            if (error) return done(null, false, { message: error });
+
             const foundUser = await findUserByEmail(email);
 
             if (!foundUser) {
                 try {
-                    const addedUser = await addUser(email, password);
+                    const addedUser = await addUser(email.trim(), password);
 
                     return done(null, addedUser);
                 } catch (err) {

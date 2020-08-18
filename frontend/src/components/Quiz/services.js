@@ -98,6 +98,7 @@ const responseDataToFormData = (data) => {
 };
 
 const formDataToRequestData = (data) => {
+    if (!data.questions) return data;
     for (let i = 0; i < data.questions.length; i++) {
         data.questions[i].number = i + 1;
         data.questions[i].correctAnswers = [];

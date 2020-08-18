@@ -1,9 +1,12 @@
 const Quiz = require('../models/quiz');
+const { validateQuiz } = require('../utils/validators');
 
 const addQuiz = async (quiz) => {
     try {
-        const newQuiz = new Quiz(quiz);
+        const result = validateQuiz(quiz);
 
+        if (result.result === 'error') return { errors: result.message };
+        const newQuiz = new Quiz(result.quiz);
         const addedQuiz = await newQuiz.save();
 
         return addedQuiz;

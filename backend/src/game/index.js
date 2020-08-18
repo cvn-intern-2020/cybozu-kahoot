@@ -1,4 +1,5 @@
 const { Game, Player, User, Host } = require('./model');
+const { validateUsername } = require('../utils/validators');
 
 const WAITING_TIME = 5000;
 
@@ -66,7 +67,8 @@ module.exports = (io) => {
         socket.on('registerNickname', ({ nickname }) => {
             const player = Player.findUserById(socket.id);
             if (!player) return;
-            player.setNickname(nickname);
+            const { error } = validateUsername(nickname.trim());
+            player.setNickname(error ? 'No name' : nickname.trim());
             sendPlayerList(player.room);
         });
 

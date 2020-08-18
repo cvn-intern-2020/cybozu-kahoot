@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 const { formatEmail } = require('../utils/auth');
+const { validatePassword } = require('../utils/validators');
 
 const findUserById = (id) => User.findById(id);
 
@@ -18,6 +19,9 @@ const addUser = async (email, password) => {
 };
 
 const changePassword = async (userId, oldPassword, newPassword) => {
+    const { error } = validatePassword(newPassword);
+    if (error) return { errors: error };
+
     const foundUser = await findUserById(userId);
 
     const isPasswordMatch = await bcrypt.compare(
