@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import Form from 'react-bootstrap/Form';
@@ -18,6 +18,8 @@ import {
     defaultQuiz,
 } from '../services';
 import { redirect } from '../../../common/utils';
+import { validateQuiz } from '../../../common/validators';
+import AppAlert from '../../../common/components/Alert/Alert';
 import QuestionList from './QuestionList';
 import styles from './QuizEdit.module.css';
 
@@ -30,15 +32,42 @@ const QuizEdit = () => {
         getValues,
         reset,
         watch,
+        setValue,
     } = useForm({
         defaultValues: defaultQuiz,
     });
+    const [alert, setAlert] = useState({
+        content: '',
+        variant: '',
+        dismissible: true,
+        show: false,
+    });
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
         const requestBody = formDataToRequestData(data);
-        if (quizId === 'new')
-            postQuiz(requestBody).then(() => redirect('/quizzes'));
-        else editQuiz(requestBody, quizId).then(() => redirect('/quizzes'));
+        const validateResult = validateQuiz(requestBody);
+        if (validateResult.result === 'error')
+            return setAlert({
+                content: validateResult.message,
+                variant: 'danger',
+                dismissible: true,
+                show: true,
+            });
+
+        let result;
+        if (quizId === 'new') {
+            result = await postQuiz(requestBody);
+        } else {
+            result = await editQuiz(requestBody, quizId);
+        }
+        if (result.errors)
+            setAlert({
+                content: result.errors,
+                variant: 'danger',
+                dismissible: true,
+                show: true,
+            });
+        else redirect('/quizzes');
     };
 
     useEffect(() => {
@@ -57,14 +86,23 @@ const QuizEdit = () => {
                     onSubmit={handleSubmit(onSubmit)}
                     className="w-100 d-flex flex-column"
                 >
+                    {alert.show && (
+                        <AppAlert
+                            variant={alert.variant}
+                            content={alert.content}
+                            dismissible={alert.dismissible}
+                            setShow={setAlert}
+                        />
+                    )}
                     <Form.Row className={`flex-shrink-0 ${styles.form}`}>
                         <Col xs={8} lg={10} className="px-3">
                             <InputGroup>
                                 <FormControl
                                     placeholder="Quiz title"
                                     name="title"
-                                    ref={register({ required: true })}
+                                    ref={register()}
                                     className={`${styles.quizTitle} h-100`}
+                                    autoFocus
                                 />
                             </InputGroup>
                         </Col>
@@ -81,7 +119,13 @@ const QuizEdit = () => {
                     </Form.Row>
                     <Form.Row className="d-flex justify-content-center flex-grow-1">
                         <QuestionList
-                            {...{ control, register, getValues, watch }}
+                            {...{
+                                control,
+                                register,
+                                getValues,
+                                watch,
+                                setValue,
+                            }}
                         />
                     </Form.Row>
                 </Form>

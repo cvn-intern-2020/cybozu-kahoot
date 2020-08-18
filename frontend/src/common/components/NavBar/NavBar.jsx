@@ -51,7 +51,7 @@ const NavBar = () => {
                             alignRight
                             className={styles.navLink}
                         >
-                            <NavDropdown.Item>
+                            <NavDropdown.Item as="button">
                                 <Link
                                     to="/change_password"
                                     className={styles.changePasswordLink}

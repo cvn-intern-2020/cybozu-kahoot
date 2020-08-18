@@ -6,7 +6,6 @@ const defaultQuiz = {
         {
             number: 1,
             title: '',
-            type: 'single',
             timeLimit: 15,
             point: 2000,
             answers: [
@@ -43,7 +42,6 @@ const defaultQuestion = (number) => {
     return {
         number,
         title: '',
-        type: 'single',
         timeLimit: 15,
         point: 2000,
         answers: [
@@ -100,6 +98,7 @@ const responseDataToFormData = (data) => {
 };
 
 const formDataToRequestData = (data) => {
+    if (!data.questions) return data;
     for (let i = 0; i < data.questions.length; i++) {
         data.questions[i].number = i + 1;
         data.questions[i].correctAnswers = [];

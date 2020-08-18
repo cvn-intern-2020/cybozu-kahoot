@@ -6,25 +6,43 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import InputGroup from 'react-bootstrap/InputGroup';
 import Badge from 'react-bootstrap/Badge';
 import styles from './QuestionList.module.css';
 
 import { defaultQuestion } from '../services';
 
-const QuestionList = ({ control, register, watch }) => {
+const QuestionList = ({ control, register, watch, setValue }) => {
     const { fields, append, remove } = useFieldArray({
         control,
         name: 'questions',
     });
-    console.log(fields);
+
     const getMaxQuestionNum = () => {
-        let maxQuestionNumber = 1;
+        let maxQuestionNumber = 0;
         fields.forEach((question) => {
             if (question.number > maxQuestionNumber)
                 maxQuestionNumber = question.number;
         });
         return maxQuestionNumber;
+    };
+
+    const resetAnswers = (index) => {
+        setValue(`questions[${index}].answers[0].correct`, true);
+        setValue(`questions[${index}].answers[1].correct`, false);
+        setValue(`questions[${index}].answers[2].correct`, false);
+        setValue(`questions[${index}].answers[3].correct`, false);
+    };
+
+    const moveAnswers = (questionIndex, answerId, value) => {
+        if (!value || watch(`questions[${questionIndex}].type`) === 'multi')
+            return;
+        for (let i = 0; i < 4; i++) {
+            if (answerId === i) continue;
+            setValue(
+                `questions[${questionIndex}].answers[${i}].correct`,
+                false
+            );
+        }
     };
 
     return (
@@ -48,12 +66,6 @@ const QuestionList = ({ control, register, watch }) => {
                         return (
                             <Nav.Item key={item.number} className="w-100">
                                 <Nav.Link
-                                    exact
-                                    to="/faq"
-                                    activeStyle={{
-                                        fontWeight: 'bold',
-                                        backgroundcolor: 'red',
-                                    }}
                                     eventKey={`questions[${index}].number`}
                                     variant="success"
                                 >
@@ -68,7 +80,6 @@ const QuestionList = ({ control, register, watch }) => {
                                         <Button
                                             type="button"
                                             variant="danger"
-                                            class="close float-right ml-auto"
                                             onClick={() => remove(index)}
                                         >
                                             X
@@ -102,7 +113,7 @@ const QuestionList = ({ control, register, watch }) => {
                                     <Col sm={9}>
                                         <Row className="mx-0 mb-3 justify-content-center">
                                             <div
-                                                class={`${styles.main_img} p-0 mb-2 mb-sm-0 shadow`}
+                                                className={`${styles.main_img} p-0 mb-2 mb-sm-0 shadow`}
                                                 style={{
                                                     backgroundImage: `url(${watch(
                                                         `questions[${index}].media.url`
@@ -125,25 +136,15 @@ const QuestionList = ({ control, register, watch }) => {
                                     <Col>
                                         <Form.Group controlId="timeLimit">
                                             <Form.Label>Time limit</Form.Label>
-                                            <InputGroup
+                                            <Form.Control
+                                                type="number"
+                                                name={`questions[${index}].timeLimit`}
+                                                ref={register()}
+                                                defaultValue={item.timeLimit}
+                                                aria-describedby="timeLimit"
+                                                size="lg"
                                                 className={styles.input}
-                                            >
-                                                <Form.Control
-                                                    type="number"
-                                                    name={`questions[${index}].timeLimit`}
-                                                    ref={register()}
-                                                    defaultValue={
-                                                        item.timeLimit
-                                                    }
-                                                    aria-describedby="timeLimit"
-                                                    size="lg"
-                                                />
-                                                <InputGroup.Append className="d-none d-xl-flex">
-                                                    <InputGroup.Text id="timeLimit">
-                                                        seconds
-                                                    </InputGroup.Text>
-                                                </InputGroup.Append>
-                                            </InputGroup>
+                                            />
                                             <Form.Text className="text-muted">
                                                 From 10 to 60 seconds.
                                             </Form.Text>
@@ -165,7 +166,7 @@ const QuestionList = ({ control, register, watch }) => {
                                                 From 100 to 10000.
                                             </Form.Text>
                                         </Form.Group>
-                                        <Form.Group controlId="point">
+                                        <Form.Group controlId="type">
                                             <Form.Label>
                                                 Question type
                                             </Form.Label>
@@ -174,7 +175,11 @@ const QuestionList = ({ control, register, watch }) => {
                                                 className={styles.input}
                                                 name={`questions[${index}].type`}
                                                 ref={register()}
-                                                defaultValue={item.point}
+                                                defaultValue={item.type}
+                                                onChange={() =>
+                                                    resetAnswers(index)
+                                                }
+                                                size="lg"
                                             >
                                                 <option value="single">
                                                     Single
@@ -206,6 +211,13 @@ const QuestionList = ({ control, register, watch }) => {
                                                     defaultChecked={
                                                         item.answers[0].correct
                                                     }
+                                                    onChange={(e) =>
+                                                        moveAnswers(
+                                                            index,
+                                                            0,
+                                                            e.target.value
+                                                        )
+                                                    }
                                                 />
                                             </Form.Label>
                                             <Form.Control
@@ -235,6 +247,13 @@ const QuestionList = ({ control, register, watch }) => {
                                                     ref={register()}
                                                     defaultChecked={
                                                         item.answers[1].correct
+                                                    }
+                                                    onChange={(e) =>
+                                                        moveAnswers(
+                                                            index,
+                                                            1,
+                                                            e.target.value
+                                                        )
                                                     }
                                                 />
                                             </Form.Label>
@@ -266,6 +285,13 @@ const QuestionList = ({ control, register, watch }) => {
                                                     defaultChecked={
                                                         item.answers[2].correct
                                                     }
+                                                    onChange={(e) =>
+                                                        moveAnswers(
+                                                            index,
+                                                            2,
+                                                            e.target.value
+                                                        )
+                                                    }
                                                 />
                                             </Form.Label>
                                             <Form.Control
@@ -295,6 +321,13 @@ const QuestionList = ({ control, register, watch }) => {
                                                     ref={register()}
                                                     defaultChecked={
                                                         item.answers[3].correct
+                                                    }
+                                                    onChange={(e) =>
+                                                        moveAnswers(
+                                                            index,
+                                                            3,
+                                                            e.target.value
+                                                        )
                                                     }
                                                 />
                                             </Form.Label>

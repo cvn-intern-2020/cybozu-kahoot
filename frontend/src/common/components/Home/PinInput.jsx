@@ -3,6 +3,8 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { useForm } from 'react-hook-form';
+
+import { validatePIN } from '../../validators';
 import { redirect } from '../../utils';
 import { isGameExist } from './services';
 import AppAlert from '../Alert/Alert';
@@ -20,6 +22,14 @@ const PinInput = () => {
     });
 
     const onSubmit = async (formData) => {
+        const { error } = validatePIN(formData.pin);
+        if (error)
+            return setAlert({
+                content: error,
+                variant: 'danger',
+                dismissible: true,
+                show: true,
+            });
         const result = await isGameExist(formData.pin);
         if (!result.error) redirect(`/join/${formData.pin}`);
         else {
@@ -58,6 +68,7 @@ const PinInput = () => {
                             size="lg"
                             className={`${styles.inputPin} text-center`}
                             ref={register()}
+                            autoFocus
                         />
                     </Form.Group>
                     <Button

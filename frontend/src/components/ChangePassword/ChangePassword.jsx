@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
@@ -7,7 +7,6 @@ import Button from 'react-bootstrap/Button';
 import styles from './ChangePassword.module.css';
 import { changePassword } from './services';
 import AppAlert from '../../common/components/Alert/Alert';
-import { redirect } from '../../common/utils';
 
 const ChangePassword = () => {
     const [alert, setAlert] = useState({
@@ -21,21 +20,14 @@ const ChangePassword = () => {
     const onSubmit = async (formData) => {
         const result = await changePassword(formData);
 
-        if (result.errors) {
-            setAlert({
-                content: result.errors,
-                variant: 'danger',
-                dismissible: true,
-                show: true,
-            });
-        } else {
-            setAlert({
-                content: 'Password successfully changed.',
-                variant: 'success',
-                dismissible: true,
-                show: true,
-            });
-        }
+        setAlert({
+            content: result.errors
+                ? result.errors
+                : 'Password successfully changed.',
+            variant: result.errors ? 'danger' : 'success',
+            dismissible: true,
+            show: true,
+        });
     };
 
     useEffect(() => {
@@ -53,14 +45,14 @@ const ChangePassword = () => {
         <div className="d-flex justify-content-center align-items-center flex-grow-1">
             <Card className={`${styles.authFormContainer} shadow-lg mb-5`}>
                 <Card.Body>
-                    {alert.show ? (
+                    {alert.show && (
                         <AppAlert
                             variant={alert.variant}
                             content={alert.content}
                             dismissible={alert.dismissible}
                             setShow={setAlert}
                         />
-                    ) : null}
+                    )}
                     <Form onSubmit={handleSubmit(onSubmit)}>
                         <Form.Group>
                             <Form.Label>Current password</Form.Label>

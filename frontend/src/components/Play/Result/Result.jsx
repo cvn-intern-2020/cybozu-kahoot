@@ -10,11 +10,17 @@ import { keyToVariants } from '../../../common/utils';
 import styles from './Result.module.css';
 
 const Result = ({ correctAnswers, leaderboard, playerNum, onNext, isEnd }) => {
-    console.log(leaderboard, playerNum);
     return (
         <Container>
-            <Card className={`shadow-lg mb-4`}>
+            <Card className={`shadow-lg mb-4 ${styles.card}`}>
                 <Card.Body className="d-flex flex-column">
+                    {isEnd && (
+                        <Row className="justify-content-center">
+                            <p class={styles.answerContainer}>
+                                The quiz has ended!
+                            </p>
+                        </Row>
+                    )}
                     <Row className={styles.answerContainer}>
                         {`Correct answer${
                             correctAnswers.length > 1 ? 's:' : ':'

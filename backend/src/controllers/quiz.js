@@ -11,27 +11,30 @@ const addQuizController = async (req, res) => {
 
     quiz.author = req.user.id;
     const addedQuiz = await addQuiz(quiz);
-    if (!addedQuiz.errors) return res.status(201).json({ id: addedQuiz.id });
+    const { errors } = addedQuiz;
+    if (!errors) return res.status(201).json({ id: addedQuiz.id });
 
-    return res.status(500).json({ errors: addedQuiz.errors });
+    return res.status(500).json({ errors });
 };
 
 const getQuizzesController = async (req, res) => {
     const userId = req.user.id;
 
     const foundQuizzes = await findQuizzesByUserId(userId);
-    if (!foundQuizzes.errors) return res.status(200).json(foundQuizzes);
+    const { errors } = foundQuizzes;
+    if (!errors) return res.status(200).json(foundQuizzes);
 
-    return res.status(500).json({ errors: foundQuizzes.errors });
+    return res.status(500).json({ errors });
 };
 
 const getSingleQuizController = async (req, res) => {
     const { quizId } = req.params;
 
     const foundQuiz = await findQuizById(quizId);
-    if (!foundQuiz.errors) return res.status(200).json(foundQuiz);
+    const { errors } = foundQuiz;
+    if (!errors) return res.status(200).json(foundQuiz);
 
-    return res.status(500).json({ errors: foundQuiz.errors });
+    return res.status(500).json({ errors });
 };
 
 const updateQuizController = async (req, res) => {
@@ -40,9 +43,10 @@ const updateQuizController = async (req, res) => {
     const quiz = req.body;
 
     const updatedQuiz = await findQuizAndUpdate(quizId, userId, quiz);
-    if (!updatedQuiz.errors) return res.status(200).json(updatedQuiz);
+    const { errors } = updatedQuiz;
+    if (!errors) return res.status(200).json(updatedQuiz);
 
-    return res.status(500).json({ errors: updatedQuiz.errors });
+    return res.status(500).json({ errors });
 };
 
 const deleteQuizController = async (req, res) => {
@@ -50,9 +54,10 @@ const deleteQuizController = async (req, res) => {
     const userId = req.user.id;
 
     const deletedResult = await findQuizAndDelete(quizId, userId);
-    if (!deletedResult.errors) return res.status(200).json(deletedResult);
+    const { errors } = deletedResult;
+    if (!errors) return res.status(200).json(deletedResult);
 
-    return res.status(500).json({ errors: deletedResult.errors });
+    return res.status(500).json({ errors });
 };
 
 const cloneQuizController = async (req, res) => {
@@ -63,16 +68,17 @@ const cloneQuizController = async (req, res) => {
     quiz = quiz.toObject({
         transform: (doc, ret) => {
             delete ret._id;
-            ret.title = `Copy of ${doc.title}`;
+            if (ret.questions) ret.title = `Copy of ${doc.title}`;
             ret.createdAt = Date.now();
             ret.updatedAt = Date.now();
             return ret;
         },
     });
     const clonedQuiz = await addQuiz(quiz);
-    if (!clonedQuiz.errors) return res.status(200).json(clonedQuiz);
+    const { errors } = clonedQuiz;
+    if (!errors) return res.status(200).json(clonedQuiz);
 
-    return res.status(500).json({ errors: clonedQuiz.errors });
+    return res.status(500).json({ errors });
 };
 
 module.exports = {

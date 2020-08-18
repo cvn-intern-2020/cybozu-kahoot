@@ -9,6 +9,7 @@ import { authUser } from './services';
 import AppAlert from '../../common/components/Alert/Alert';
 import { redirect } from '../../common/utils';
 import { UserContext } from '../../contexts/UserContext';
+import { validateUser } from '../../common/validators';
 
 const RegisterLogin = () => {
     const user = useContext(UserContext);
@@ -23,6 +24,15 @@ const RegisterLogin = () => {
     const { register, handleSubmit, errors } = useForm();
 
     const onSubmit = async (formData) => {
+        const { error } = validateUser(formData);
+        if (error)
+            return setAlert({
+                content: error,
+                variant: 'danger',
+                dismissible: true,
+                show: true,
+            });
+
         const result = await authUser(formData);
 
         if (result.success) return redirect('/');
@@ -54,14 +64,14 @@ const RegisterLogin = () => {
                     <Card.Title className="text-center mb-4">
                         <h2 className={styles.label}>Register/Login</h2>
                     </Card.Title>
-                    {alert.show ? (
+                    {alert.show && (
                         <AppAlert
                             variant={alert.variant}
                             content={alert.content}
                             dismissible={alert.dismissible}
                             setShow={setAlert}
                         />
-                    ) : null}
+                    )}
                     <Form onSubmit={handleSubmit(onSubmit)}>
                         <Form.Group controlId="formEmail">
                             <Form.Label>Email address</Form.Label>

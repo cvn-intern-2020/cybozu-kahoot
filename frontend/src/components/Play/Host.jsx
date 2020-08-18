@@ -17,6 +17,7 @@ const Host = () => {
     const [currentQuestion, setCurrentQuestion] = useState();
     const [leaderboard, setLeaderboard] = useState();
     const [correctAnswers, setCorrectAnswers] = useState();
+    // eslint-disable-next-line
     const [currentCorrectAnswers, setCurrentCorrectAnswers] = useState();
     const [isEnd, setIsEnd] = useState(false);
 
@@ -32,12 +33,7 @@ const Host = () => {
         socketRef.current.emit('hostJoin', { quizId });
 
         socketRef.current.on('roomCreated', ({ id, quiz }) => {
-            console.log(quiz);
             setRoomId(id);
-        });
-
-        socketRef.current.on('playerJoin', () => {
-            console.log('a player has joined');
         });
 
         socketRef.current.on('playerList', (playerNameList) => {
@@ -67,7 +63,7 @@ const Host = () => {
         );
 
         return () => socketRef.current.close();
-    }, []);
+    }, [quizId]);
 
     const renderSwitch = (currentScene) => {
         switch (currentScene) {

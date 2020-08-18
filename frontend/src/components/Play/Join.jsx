@@ -18,12 +18,12 @@ const Join = () => {
     const [scene, setScene] = useState('naming');
     const [nickname, setNickname] = useState('No name');
     const [playerList, setPlayerList] = useState([]);
-    const [score, setScore] = useState(0);
     const [nextQuestionTime, setNextQuestionTime] = useState();
     const [currentQuestion, setCurrentQuestion] = useState();
     const [leaderboard, setLeaderboard] = useState();
     const [correctAnswers, setCorrectAnswers] = useState();
     const [playerNum, setPlayerNum] = useState();
+    const [isEnd, setIsEnd] = useState(false);
 
     const handleAnswer = (answerId) => {
         socketRef.current.emit('submitAnswer', { id: answerId });
@@ -37,7 +37,6 @@ const Join = () => {
         socketRef.current.on('roomNotFound', () => redirect('/'));
 
         socketRef.current.on('nextQuestion', (question) => {
-            console.log(question);
             const timeTillQuestion = question.startTime - Date.now();
             setCurrentQuestion(question.question);
             setNextQuestionTime(question.startTime);
@@ -49,11 +48,15 @@ const Join = () => {
             setPlayerList(playerNameList);
         });
 
-        socketRef.current.on('result', ({ correctAnswers, leaderboard }) => {
-            setCorrectAnswers(correctAnswers);
-            setLeaderboard(leaderboard);
-            setScene('result');
-        });
+        socketRef.current.on(
+            'result',
+            ({ correctAnswers, leaderboard, isEnd }) => {
+                setCorrectAnswers(correctAnswers);
+                setLeaderboard(leaderboard);
+                setIsEnd(isEnd);
+                setScene('result');
+            }
+        );
 
         socketRef.current.on('playerNum', ({ number }) => {
             setPlayerNum(number);
@@ -62,7 +65,7 @@ const Join = () => {
         socketRef.current.on('hostDisconnected', () => redirect('/'));
 
         return () => socketRef.current.close();
-    }, []);
+    }, [roomId]);
 
     const renderSwitch = (currentScene) => {
         switch (currentScene) {
@@ -93,6 +96,7 @@ const Join = () => {
                         correctAnswers={correctAnswers}
                         leaderboard={leaderboard}
                         playerNum={playerNum}
+                        isEnd={isEnd}
                     />
                 );
             default:

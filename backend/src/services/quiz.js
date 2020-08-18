@@ -1,9 +1,12 @@
 const Quiz = require('../models/quiz');
+const { validateQuiz } = require('../utils/validators');
 
 const addQuiz = async (quiz) => {
     try {
-        const newQuiz = new Quiz(quiz);
+        const result = validateQuiz(quiz);
 
+        if (result.result === 'error') return { errors: result.message };
+        const newQuiz = new Quiz(result.quiz);
         const addedQuiz = await newQuiz.save();
 
         return addedQuiz;
@@ -16,11 +19,20 @@ const findQuizzesByUserId = async (userId) => {
     try {
         const foundQuizzes = await Quiz.find(
             { author: userId },
-            'title questions createdAt updatedAt'
-        ).lean();
+            'title media questions createdAt updatedAt'
+        )
+            .sort({ updatedAt: 'desc' })
+            .lean();
 
         return foundQuizzes.map((quiz) => {
-            quiz.questions = quiz.questions.length;
+            for (let i = 0; i < quiz.questions.length; i++) {
+                if (quiz.questions[i].media) {
+                    quiz.thumb = quiz.questions[i].media.url;
+                    break;
+                }
+            }
+            quiz.questionsNumber = quiz.questions.length;
+            delete quiz.questions;
             return quiz;
         });
     } catch (err) {

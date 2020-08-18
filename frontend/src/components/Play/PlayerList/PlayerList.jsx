@@ -27,7 +27,7 @@ const PlayerList = ({ pin, players, onStart }) => {
                               ))
                             : null}
                     </Card.Text>
-                    {pin && onStart ? (
+                    {pin && onStart && players.length > 0 && (
                         <Button
                             variant="danger"
                             block
@@ -37,7 +37,7 @@ const PlayerList = ({ pin, players, onStart }) => {
                         >
                             Start
                         </Button>
-                    ) : null}
+                    )}
                 </Card.Body>
             </Card>
         </Container>
