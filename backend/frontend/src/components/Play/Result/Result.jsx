@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Badge from 'react-bootstrap/Badge';
 import ListGroup from 'react-bootstrap/ListGroup';
+import { Link } from 'react-router-dom';
 
 import { keyToVariants } from '../../../common/utils';
 import styles from './Result.module.css';
@@ -56,7 +57,7 @@ const Result = ({ correctAnswers, leaderboard, playerNum, onNext, isEnd }) => {
                             ))}
                         </ListGroup>
                     </Row>
-                    {onNext && !isEnd ? (
+                    {onNext && !isEnd && (
                         <Button
                             variant="danger"
                             block
@@ -66,7 +67,17 @@ const Result = ({ correctAnswers, leaderboard, playerNum, onNext, isEnd }) => {
                         >
                             Next question
                         </Button>
-                    ) : null}
+                    )}
+                    {isEnd && (
+                        <Link
+                            to={onNext ? '/quizzes' : '/'}
+                            className={`${styles.button} mt-auto`}
+                        >
+                            <Button variant="danger" block size="lg">
+                                Exit
+                            </Button>
+                        </Link>
+                    )}
                 </Card.Body>
             </Card>
         </Container>

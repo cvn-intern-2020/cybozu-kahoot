@@ -7,18 +7,19 @@ import {
 } from 'react-router-dom';
 
 import Container from 'react-bootstrap/Container';
+import Spinner from 'react-bootstrap/Spinner';
 
 import Home from '../Home/Home';
 import RegisterLogin from '../../../components/RegisterLogin/RegisterLogin';
 import QuizList from '../../../components/Quiz/QuizList/QuizList';
 import NavBar from '../NavBar/NavBar';
 import QuizEdit from '../../../components/Quiz/QuizEdit/QuizEdit';
-
 import ChangePassword from '../../../components/ChangePassword/ChangePassword';
-
 import Host from '../../../components/Play/Host';
 import Join from '../../../components/Play/Join';
 import { UserContext } from '../../../contexts/UserContext';
+
+import styles from './App.module.css';
 
 const App = () => {
     const user = useContext(UserContext);
@@ -28,7 +29,19 @@ const App = () => {
         if (typeof user !== 'undefined') setIsLoading(false);
     }, [user]);
 
-    if (isLoading) return <span>loading...</span>;
+    if (isLoading)
+        return (
+            <Container
+                fluid
+                className="min-100 d-flex align-items-center justify-content-center"
+            >
+                <Spinner
+                    animation="border"
+                    variant="light"
+                    className={styles.spinner}
+                />
+            </Container>
+        );
 
     return (
         <Router>

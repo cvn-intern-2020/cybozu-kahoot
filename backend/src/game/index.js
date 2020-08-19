@@ -57,7 +57,11 @@ module.exports = (io) => {
 
         socket.on('playerJoin', ({ roomId }) => {
             const game = Game.findGameById(roomId);
-            if (!game) return socket.emit('roomNotFound');
+            if (
+                !game ||
+                (game.currentQuestion && game.currentQuestion.question)
+            )
+                return socket.emit('roomNotFound');
             socket.join(roomId);
             game._totalPlayersNum += 1;
             const newPlayer = new Player(socket.id, roomId);

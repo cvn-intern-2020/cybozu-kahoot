@@ -24,7 +24,9 @@
     min-width: 20vw;
 }
 
-.button {
+.button,
+.button:hover {
     font-family: 'Luckiest Guy', cursive;
     font-size: 5vh !important;
+    text-decoration: none;
 }

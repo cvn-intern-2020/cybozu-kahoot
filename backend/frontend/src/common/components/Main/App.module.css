@@ -1,0 +1,6 @@
+.spinner {
+    width: 20vw !important;
+    height: 20vw !important;
+    border: 3.25em solid currentColor !important;
+    border-right-color: transparent !important;
+}

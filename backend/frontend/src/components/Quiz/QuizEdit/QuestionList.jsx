@@ -101,7 +101,7 @@ const QuestionList = ({ control, register, watch, setValue }) => {
                             >
                                 <Row className="mx-0">
                                     <Form.Control
-                                        className={`form-control form-control-lg ml-3 mt-3 d-none d-sm-block ${styles.questionTitle}`}
+                                        className={`form-control form-control-lg ml-3 mt-3 d-sm-block ${styles.questionTitle}`}
                                         type="text"
                                         name={`questions[${index}].title`}
                                         ref={register()}
