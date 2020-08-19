@@ -1,0 +1,22 @@
+.navLink,
+.navLink > a {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 1.5rem;
+    color: black !important;
+    letter-spacing: 0.2rem;
+}
+
+.changePasswordLink {
+    color: black !important;
+    letter-spacing: 0.2rem;
+}
+
+.changePasswordLink:hover {
+    color: black !important;
+    text-decoration: none;
+}
+
+.navLink:hover,
+.navLink:hover > a {
+    color: white !important;
+}

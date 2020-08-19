@@ -1,90 +1,129 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { useForm } from 'react-hook-form';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+
 import styles from './RegisterLogin.module.css';
-
-import AppAlert from '../Alert/Alert';
-
-const AUTH_ENDPOINT = 'http://localhost:6969/api/auth/register_login';
+import { authUser } from './services';
+import AppAlert from '../../common/components/Alert/Alert';
+import { redirect } from '../../common/utils';
+import { UserContext } from '../../contexts/UserContext';
+import { validateUser } from '../../common/validators';
 
 const RegisterLogin = () => {
-  const [emailValue, setEmailValue] = useState('');
-  const [passwordValue, setPasswordValue] = useState('');
-  const [alert, setAlert] = useState({
-    content: '',
-    variant: '',
-    dismissible: true,
-    show: false,
-  });
+    const user = useContext(UserContext);
+    if (user && user.email.length > 0) redirect('/');
 
-  const authenticate = async (e) => {
-    e.preventDefault();
-    const result = await fetch(AUTH_ENDPOINT, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: emailValue,
-        password: passwordValue,
-      }),
-      credentials: 'include',
-    }).then((res) => res.json());
-    if (result.success) return (window.location.href = '/');
-    if (result.errors) {
-      setAlert({
-        content: result.errors,
-        variant: 'danger',
+    const [alert, setAlert] = useState({
+        content: '',
+        variant: '',
         dismissible: true,
-        show: true,
-      });
-    }
-  };
-  return (
-    <Card className={`${styles.authFormContainer} shadow p-3`}>
-      <Card.Body>
-        <Card.Title className="text-center mb-4">
-          <h3>Register/Login</h3>
-        </Card.Title>
-        {alert.show ? (
-          <AppAlert
-            variant={alert.variant}
-            content={alert.content}
-            dismissible={alert.dismissible}
-            setShow={setAlert}
-          />
-        ) : null}
-        <Form onSubmit={authenticate}>
-          <Form.Group>
-            <Form.Label>Email address</Form.Label>
-            <Form.Control
-              type="email"
-              placeholder="Enter email"
-              onChange={(e) => setEmailValue(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
-          <Form.Group>
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Password"
-              onChange={(e) => setPasswordValue(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
-          <Button
-            variant="primary"
-            onClick={(e) => authenticate(e)}
-            block
-            className="mt-4"
-            type="submit"
-          >
-            Register/Login
-          </Button>
-        </Form>
-      </Card.Body>
-    </Card>
-  );
+        show: false,
+    });
+    const { register, handleSubmit, errors } = useForm();
+
+    const onSubmit = async (formData) => {
+        const { error } = validateUser(formData);
+        if (error)
+            return setAlert({
+                content: error,
+                variant: 'danger',
+                dismissible: true,
+                show: true,
+            });
+
+        const result = await authUser(formData);
+
+        if (result.success) return redirect('/');
+        if (result.errors) {
+            setAlert({
+                content: result.errors,
+                variant: 'danger',
+                dismissible: true,
+                show: true,
+            });
+        }
+    };
+
+    useEffect(() => {
+        if (Object.keys(errors).length > 0) {
+            setAlert({
+                content: errors[Object.keys(errors)[0]].message,
+                variant: 'danger',
+                dismissible: true,
+                show: true,
+            });
+        }
+    }, [errors]);
+
+    return (
+        <div className="d-flex justify-content-center align-items-center flex-grow-1">
+            <Card className={`${styles.authFormContainer} shadow-lg mb-5`}>
+                <Card.Body>
+                    <Card.Title className="text-center mb-4">
+                        <h2 className={styles.label}>Register/Login</h2>
+                    </Card.Title>
+                    {alert.show && (
+                        <AppAlert
+                            variant={alert.variant}
+                            content={alert.content}
+                            dismissible={alert.dismissible}
+                            setShow={setAlert}
+                        />
+                    )}
+                    <Form onSubmit={handleSubmit(onSubmit)}>
+                        <Form.Group controlId="formEmail">
+                            <Form.Label>Email address</Form.Label>
+                            <Form.Control
+                                type="email"
+                                placeholder="Email"
+                                ref={register({
+                                    required: {
+                                        value: true,
+                                        message: 'Email cannot be empty.',
+                                    },
+                                })}
+                                name="email"
+                                size="lg"
+                                className={styles.input}
+                            ></Form.Control>
+                        </Form.Group>
+                        <Form.Group controlId="formPassword">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control
+                                type="password"
+                                placeholder="Password"
+                                ref={register({
+                                    required: {
+                                        value: true,
+                                        message: 'Password cannot be empty.',
+                                    },
+                                    minLength: {
+                                        value: 6,
+                                        message:
+                                            'Password must contain at least 6 characters.',
+                                    },
+                                })}
+                                name="password"
+                                size="lg"
+                                className={styles.input}
+                            ></Form.Control>
+                        </Form.Group>
+                        <Button
+                            variant="danger"
+                            block
+                            className={`${styles.button} mt-4`}
+                            type="submit"
+                            size="lg"
+                        >
+                            Register/Login
+                        </Button>
+                    </Form>
+                </Card.Body>
+            </Card>
+        </div>
+    );
 };
 
 export default RegisterLogin;

@@ -1,3 +1,20 @@
+html,
+body,
 #root {
-  height: 100vh;
+    height: 100%;
+}
+
+body {
+    background-image: url('https://thumbs.gfycat.com/AlarmingIndolentCaracal-small.gif');
+    background-color: #cccccc;
+    background-size: cover;
+    background-position-y: 25%;
+    background-position-x: 45%;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Coiny&display=swap');
+
+.min-100 {
+    min-height: 100%;
 }
